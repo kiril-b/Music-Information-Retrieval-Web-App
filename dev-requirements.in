@@ -1,0 +1,6 @@
+-c requirements.txt
+black
+mypy
+ruff
+ipython
+types-requests

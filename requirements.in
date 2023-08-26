@@ -1,0 +1,11 @@
+fastapi
+uvicorn[standard]
+requests
+python-dotenv
+pydantic==1.10.11
+qdrant-client
+pandas
+numpy
+librosa
+scipy
+jupyter
