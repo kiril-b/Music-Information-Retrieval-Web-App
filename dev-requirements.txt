@@ -23,6 +23,10 @@ colorama==0.4.6
     #   -c requirements.txt
     #   click
     #   ipython
+contourpy==1.1.0
+    # via matplotlib
+cycler==0.11.0
+    # via matplotlib
 decorator==5.1.1
     # via
     #   -c requirements.txt
@@ -31,6 +35,8 @@ executing==1.2.0
     # via
     #   -c requirements.txt
     #   stack-data
+fonttools==4.42.1
+    # via matplotlib
 ipython==8.14.0
     # via
     #   -c requirements.txt
@@ -39,6 +45,12 @@ jedi==0.19.0
     # via
     #   -c requirements.txt
     #   ipython
+kiwisolver==1.4.5
+    # via matplotlib
+matplotlib==3.7.2
+    # via
+    #   -r dev-requirements.in
+    #   seaborn
 matplotlib-inline==0.1.6
     # via
     #   -c requirements.txt
@@ -49,10 +61,22 @@ mypy-extensions==1.0.0
     # via
     #   black
     #   mypy
+numpy==1.24.4
+    # via
+    #   -c requirements.txt
+    #   contourpy
+    #   matplotlib
+    #   pandas
+    #   seaborn
 packaging==23.1
     # via
     #   -c requirements.txt
     #   black
+    #   matplotlib
+pandas==2.0.3
+    # via
+    #   -c requirements.txt
+    #   seaborn
 parso==0.8.3
     # via
     #   -c requirements.txt
@@ -63,6 +87,8 @@ pickleshare==0.7.5
     # via
     #   -c requirements.txt
     #   ipython
+pillow==10.0.0
+    # via matplotlib
 platformdirs==3.10.0
     # via
     #   -c requirements.txt
@@ -79,12 +105,26 @@ pygments==2.16.1
     # via
     #   -c requirements.txt
     #   ipython
+pyparsing==3.0.9
+    # via matplotlib
+python-dateutil==2.8.2
+    # via
+    #   -c requirements.txt
+    #   matplotlib
+    #   pandas
+pytz==2023.3
+    # via
+    #   -c requirements.txt
+    #   pandas
 ruff==0.0.286
+    # via -r dev-requirements.in
+seaborn==0.12.2
     # via -r dev-requirements.in
 six==1.16.0
     # via
     #   -c requirements.txt
     #   asttokens
+    #   python-dateutil
 stack-data==0.6.2
     # via
     #   -c requirements.txt
@@ -102,6 +142,10 @@ typing-extensions==4.7.1
     # via
     #   -c requirements.txt
     #   mypy
+tzdata==2023.3
+    # via
+    #   -c requirements.txt
+    #   pandas
 wcwidth==0.2.6
     # via
     #   -c requirements.txt

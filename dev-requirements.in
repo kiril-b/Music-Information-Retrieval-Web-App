@@ -4,3 +4,5 @@ mypy
 ruff
 ipython
 types-requests
+seaborn
+matplotlib
