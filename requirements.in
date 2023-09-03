@@ -9,3 +9,4 @@ numpy
 librosa
 scipy
 jupyter
+python-multipart

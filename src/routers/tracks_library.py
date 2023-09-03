@@ -5,9 +5,9 @@ from src.service import track_operations
 from src.models.models import ScoredTrack, Track
 from src.models.enumerations import GenreEnum, TrackFields
 
-tracks_router = APIRouter()
+tracks_library_router = APIRouter()
 
-@tracks_router.get("/get_tracks", description="Returns a tuple containing the list of 'limit'-number of Tracks, as well as the offset of the track of the next page. (tracks, next_page_track_id)")
+@tracks_library_router.get("/get_tracks", description="Returns a tuple containing the list of 'limit'-number of Tracks, as well as the offset of the track of the next page. (tracks, next_page_track_id)")
 def get_tracks(
     offset: Annotated[int, Query(ge=0)],
     limit: Annotated[int, Query(ge=0)],
@@ -30,7 +30,7 @@ def get_tracks(
         exact_match_filter={k: v for k, v in exact_match_filter.items() if v is not None}
     )
 
-@tracks_router.get('/similar_tracks')
+@tracks_library_router.get('/similar_tracks')
 def get_most_similar_tracks(
     track_id: int,
     number_of_similar_tracks: Annotated[int, Query(ge=1)] = 10,
@@ -47,7 +47,7 @@ def get_most_similar_tracks(
         exact_match_filter={k: v for k, v in exact_match_filter.items() if v is not None}
     )
 
-@tracks_router.get('/{track_id}')
+@tracks_library_router.get('/{track_id}')
 def get_track_by_id(track_id: int) -> Track:
     return track_operations.get_track_by_id(track_id=track_id)
 
