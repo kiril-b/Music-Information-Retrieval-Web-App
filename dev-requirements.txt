@@ -61,9 +61,10 @@ mypy-extensions==1.0.0
     # via
     #   black
     #   mypy
-numpy==1.24.4
+numpy==1.23.5
     # via
     #   -c requirements.txt
+    #   -r dev-requirements.in
     #   contourpy
     #   matplotlib
     #   pandas

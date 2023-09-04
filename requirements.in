@@ -3,10 +3,11 @@ uvicorn[standard]
 requests
 python-dotenv
 pydantic==1.10.11
-qdrant-client
-pandas
 numpy
+pandas
+tensorflow
 librosa
 scipy
 jupyter
 python-multipart
+qdrant-client
