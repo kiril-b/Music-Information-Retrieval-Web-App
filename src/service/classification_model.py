@@ -5,6 +5,17 @@ from src.utils import constants
 
 
 def classify_track(track_x: pd.DataFrame) -> pd.DataFrame:
+    """
+    Classify a track based on its features using a pre-trained neural network model.
+
+    Args:
+        track_x (pd.DataFrame): A DataFrame containing the features of the track to be classified.
+
+    Returns:
+        pd.DataFrame: A DataFrame containing the classification results for the input track.
+            The columns represent class labels, and the values are the corresponding probabilities.
+    """
+
     # Loading the model
     mlp_clf = tf.keras.models.load_model(constants.MODEL_SERIAZLIATION_PATH)
 
@@ -18,11 +29,7 @@ def classify_track(track_x: pd.DataFrame) -> pd.DataFrame:
     return track_y
 
 
-def get_top_n_genres_present(
-        track_y: pd.DataFrame, 
-        top_n: int = 5
-    ) -> dict[str, float]:
-
+def get_top_n_genres_present(track_y: pd.DataFrame, top_n: int = 5) -> dict[str, float]:
     """
     Get the top N genres present in the prediction.
 

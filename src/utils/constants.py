@@ -29,3 +29,6 @@ CLASS_NAMES_MODEL_ORDER = [
     "Soul-RnB",
     "Spoken",
 ]
+
+NUMBER_OF_GENRES = 16
+

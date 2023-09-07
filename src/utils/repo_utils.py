@@ -3,8 +3,9 @@ from typing import Any
 from qdrant_client import models
 
 
-def generate_must_clauses(filter_conditions: dict[str, Any]) -> list[models.FieldCondition]:
-    
+def generate_must_clauses(
+    filter_conditions: dict[str, Any]
+) -> list[models.FieldCondition]:
     """
     Generate a list of Qdrant FieldCondition objects based on filter conditions.
 
@@ -22,7 +23,8 @@ def generate_must_clauses(filter_conditions: dict[str, Any]) -> list[models.Fiel
             models.FieldCondition(
                 key=k,
                 match=models.MatchValue(value=v),
-            ) for k, v in filter_conditions.items()
+            )
+            for k, v in filter_conditions.items()
         ]
-        
+
     return []

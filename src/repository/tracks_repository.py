@@ -8,20 +8,20 @@ from qdrant_client.http.models.models import Record, ScoredPoint
 
 from src.models.exceptions.database_error_exception import DatabaseError
 from src.utils.repo_utils import generate_must_clauses
+from src.models.enumerations import TrackFields
 
 load_dotenv()
-COLLECTION_NAME = os.getenv('QDRANT_COLLECTION_NAME')
-client = QdrantClient(url=os.getenv('QDRANT_URL'))
+COLLECTION_NAME = os.getenv("QDRANT_COLLECTION_NAME")
+client = QdrantClient(url=os.getenv("QDRANT_URL"))
 
 
 def get_tracks(
-        offset: int = 0,
-        limit: int = 15,
-        exact_match_filter: dict[str, Any] = None,
-        track_listens_lower: int | None = None,
-        track_listens_upper: int | None = None
-    ) -> tuple[list[Record], int | None]:
-
+    offset: int = 0,
+    limit: int = 15,
+    exact_match_filter: dict[str, Any] = None,
+    track_listens_lower: int | None = None,
+    track_listens_upper: int | None = None,
+) -> tuple[list[Record], int | None]:
     """
     Retrieve a list of tracks based on various filters.
 
@@ -38,32 +38,24 @@ def get_tracks(
 
     must_clauses = generate_must_clauses(exact_match_filter) + [
         models.FieldCondition(
-            key='meta_track_listens', 
-            range=models.Range(
-                gt=track_listens_lower,
-                lt=track_listens_upper
-            )
+            key="meta_track_listens",
+            range=models.Range(gt=track_listens_lower, lt=track_listens_upper),
         )
-    ] 
-    
+    ]
+
     return client.scroll(
         collection_name=COLLECTION_NAME,
         offset=offset,
         limit=limit,
-        scroll_filter=models.Filter(
-            must=must_clauses
-        ),
+        scroll_filter=models.Filter(must=must_clauses),
         with_payload=True,
-        with_vectors=False
+        with_vectors=False,
     )
 
 
 def get_track_by_id(
-        track_id: int, 
-        with_payload: bool = True, 
-        with_vectors: bool = False
-    ) -> Record | None:
-
+    track_id: int, with_payload: bool = True, with_vectors: bool = False
+) -> Record | None:
     """
     Retrieve a track by its ID.
 
@@ -80,7 +72,7 @@ def get_track_by_id(
         collection_name=COLLECTION_NAME,
         ids=[track_id],
         with_payload=with_payload,
-        with_vectors=with_vectors
+        with_vectors=with_vectors,
     )
     # the DB would not allow duplicate indexes
     if len(tracks) == 1:
@@ -88,19 +80,18 @@ def get_track_by_id(
     elif len(tracks) == 0:
         return None
     else:
-        raise DatabaseError('Multiple tracks with the same ID found.') 
+        raise DatabaseError("Multiple tracks with the same ID found.")
 
 
 def get_most_similar_tracks(
-        track_id: int | None = None,
-        track_embedding: list[float] | None = None,
-        limit: int = 10, 
-        exact_search: bool = False,
-        with_payload: bool = True, 
-        with_vectors: bool = False,
-        exact_match_filter: dict[str, Any] | None = None
-    ) -> list[ScoredPoint]:
-
+    track_id: int | None = None,
+    track_embedding: list[float] | None = None,
+    limit: int = 10,
+    exact_search: bool = False,
+    with_payload: bool = True,
+    with_vectors: bool = False,
+    exact_match_filter: dict[str, Any] | None = None,
+) -> list[ScoredPoint]:
     """
     Retrieve a list of the most similar tracks to the given input, either by track ID or track embedding.
 
@@ -133,13 +124,15 @@ def get_most_similar_tracks(
     """
 
     if track_id and track_embedding:
-        raise ValueError('Only one of [track_id, track_embedding] can be non-None')
-    
+        raise ValueError("Only one of [track_id, track_embedding] can be non-None")
+
     if track_id:
-        query_track = get_track_by_id(track_id=track_id, with_payload=False, with_vectors=True)  # noqa: E501
+        query_track = get_track_by_id(
+            track_id=track_id, with_payload=False, with_vectors=True
+        )  # noqa: E501
 
         if query_track is None:
-            raise DatabaseError(f'Track with id: {track_id} does not exist.')
+            raise DatabaseError(f"Track with id: {track_id} does not exist.")
 
         track_embedding = query_track.vector
 
@@ -152,7 +145,29 @@ def get_most_similar_tracks(
         search_params=models.SearchParams(exact=exact_search),
         limit=limit,
         with_vectors=with_vectors,
-        with_payload=with_payload
+        with_payload=with_payload,
     )
 
 
+def get_tracks_full_text_match(
+    match_string: str, offset: int, limit: int, enum_field: TrackFields
+) -> list[Record]:
+    return client.scroll(
+        collection_name=COLLECTION_NAME,
+        offset=offset,
+        limit=limit,
+        with_payload=True,
+        with_vectors=False,
+        scroll_filter=models.Filter(
+            must=[
+                models.FieldCondition(
+                    key=enum_field.value,
+                    match=models.MatchText(text=match_string),
+                )
+            ]
+        ),
+    )
+
+
+def get_number_of_datapoints() -> int:
+    return client.get_collection(collection_name=COLLECTION_NAME).points_count
