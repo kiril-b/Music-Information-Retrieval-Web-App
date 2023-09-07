@@ -1,7 +1,7 @@
 from typing import Annotated
 from fastapi import APIRouter, Query
 
-from src.service import track_operations
+from src.service import track_operations, playlist_enrichment
 from src.models.models import ScoredTrack, Track
 from src.models.enumerations import GenreEnum, TrackFields
 
@@ -82,3 +82,8 @@ def get_most_similar_tracks(
 @tracks_library_router.get("/{track_id}")
 def get_track_by_id(track_id: int) -> Track:
     return track_operations.get_track_by_id(track_id=track_id)
+
+
+@tracks_library_router.post("/enrich_playlist")
+def enrich_playlist(track_ids: list[int]) -> list[Track]:
+    return playlist_enrichment.enrich(track_ids)

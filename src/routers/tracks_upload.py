@@ -1,5 +1,6 @@
 from typing import Annotated
 from fastapi import APIRouter, HTTPException, Query, UploadFile
+from src.models.models import UploadedTrack
 
 from src.service import track_operations
 from src.utils.constants import NUMBER_OF_GENRES
@@ -12,7 +13,7 @@ async def upload_audio_file(
     file: UploadFile,
     top_n_genres: Annotated[int, Query(le=NUMBER_OF_GENRES)] = 5,
     top_n_similar: Annotated[int, Query(ge=0)] = 10,
-):
+) -> UploadedTrack:
     if file.content_type != "audio/mpeg":
         raise HTTPException(
             status_code=400, detail="Only audio/mpeg (MP3) files are allowed."

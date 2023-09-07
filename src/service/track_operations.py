@@ -47,6 +47,20 @@ def get_tracks(
 def get_tracks_by_full_text_match(
     match_string: str, offset: int, limit: int | None, enum_field: TrackFields
 ) -> list[Track]:
+    
+    """
+    Retrieve tracks that have a full-text match with a given string in a specified field.
+
+    Args:
+        match_string (str): The string to match against in the specified field.
+        offset (int): The offset for paginating results.
+        limit (int | None): The maximum number of tracks to retrieve. Set to None to retrieve all matching tracks.
+        enum_field (TrackFields): The field in which to search for a full-text match.
+
+    Returns:
+        list[Track]: A list of Track objects that match the search criteria.
+    """
+
     tracks, _ = tracks_repository.get_tracks_full_text_match(
         match_string=match_string,
         offset=offset,
@@ -56,20 +70,22 @@ def get_tracks_by_full_text_match(
     return [model_creation.record_to_track(record) for record in tracks]
 
 
+
 def find_n_most_similar_tracks_by_id(
     track_id: int, n: int, exact_match_filter: dict[str, Any] | None = None
 ) -> list[ScoredTrack]:
+    
     """
-    Find the n most similar tracks to a given track.
+    Find the top N most similar tracks to a track by its ID.
 
     Args:
-        track_id (int): The unique identifier of the query track.
+        track_id (int): The ID of the track to find similar tracks for.
         n (int): The number of similar tracks to retrieve.
-        exact_match_filter (dict[str, Any] | None): Filters for exact matches on track attributes. Default is None.
+        exact_match_filter (dict[str, Any] | None): A dictionary specifying exact match filters for query clauses.
+            Set to None if no exact match filters are needed.
 
     Returns:
-        list[ScoredTrack]: A list of ScoredTrack objects representing the most similar tracks.
-
+        list[ScoredTrack]: A list of ScoredTrack objects representing the most similar tracks found.
     """
 
     return [
@@ -86,6 +102,18 @@ def find_n_most_similar_tracks_by_id(
 def find_n_most_similar_tracks_by_embedding(
     track_embedding: list[float], n: int
 ) -> list[ScoredTrack]:
+    
+    """
+    Find the top N most similar tracks based on a given track embedding.
+
+    Args:
+        track_embedding (list[float]): The embedding vector of the track to find similar tracks for.
+        n (int): The number of similar tracks to retrieve.
+
+    Returns:
+        list[ScoredTrack]: A list of ScoredTrack objects representing the most similar tracks found.
+    """
+
     return [
         model_creation.record_to_track(scored_point)
         for scored_point in tracks_repository.get_most_similar_tracks(
@@ -116,6 +144,19 @@ def get_track_by_id(track_id: int) -> Track:
 async def clf_and_most_similar_tracks(
     file: UploadFile, top_n_genres: int, top_n_similar: int
 ) -> UploadedTrack:
+    
+    """
+    Perform genre prediction and find the most similar tracks for an uploaded track file.
+
+    Args:
+        file (UploadFile): The uploaded track file for analysis.
+        top_n_genres (int): The number of top genres to predict.
+        top_n_similar (int): The number of most similar tracks to retrieve.
+
+    Returns:
+        UploadedTrack: An UploadedTrack object containing the most similar tracks and genre predictions.
+    """
+    
     track_x = await feature_extraction.extract_features(file)
 
     # Genre Prediction

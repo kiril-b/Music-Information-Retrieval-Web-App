@@ -112,15 +112,6 @@ def get_most_similar_tracks(
     Raises:
         ValueError: If both track_id and track_embedding are provided or if neither is provided.
         DatabaseError: If a track with the provided track_id does not exist in the database.
-
-    Example:
-        To find the most similar tracks to a given track embedding:
-        >>> embedding = [0.1, 0.2, 0.3]
-        >>> similar_tracks = get_most_similar_tracks(track_embedding=embedding)
-
-        To find the most similar tracks to a track by its ID:
-        >>> track_id = 12345
-        >>> similar_tracks = get_most_similar_tracks(track_id=track_id)
     """
 
     if track_id and track_embedding:
