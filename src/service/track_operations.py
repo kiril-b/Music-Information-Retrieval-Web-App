@@ -1,7 +1,10 @@
 from typing import Any
 
+from fastapi import UploadFile
+
 from src.repository import tracks_repository
-from src.models.models import ScoredTrack, Track
+from src.models.models import ScoredTrack, Track, UploadedTrack
+from src.service import classification_model, feature_extraction
 from src.utils import model_creation
 
 
@@ -77,3 +80,35 @@ def get_track_by_id(track_id: int) -> Track:
     """
 
     return model_creation.record_to_track(tracks_repository.get_track_by_id(track_id=track_id))
+
+
+async def clf_and_most_similar_tracks(
+        file: UploadFile, 
+        top_n_genres: int, 
+        top_n_similar: int
+    ) -> UploadedTrack:
+
+    track_x = await feature_extraction.extract_features(file)
+
+    # Genre Prediction
+    track_genre_distribution = classification_model.classify_track(track_x)
+    top_n_genres_present = classification_model.get_top_n_genres_present(
+        track_y=track_genre_distribution, top_n=top_n_genres
+    )
+
+    # Similarity Search
+    most_similar_tracks = [
+        model_creation.record_to_track(scoredPoint)
+        for scoredPoint in tracks_repository.get_most_similar_tracks(
+            track_embedding=track_x.values[0],
+            limit=top_n_similar,
+            exact_search=False,
+            with_payload=True,
+            with_vectors=False,
+        )
+    ]
+
+    return UploadedTrack(
+        most_similar_tracks=most_similar_tracks,
+        genre_prediction=top_n_genres_present
+    )

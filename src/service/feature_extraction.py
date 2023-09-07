@@ -88,7 +88,7 @@ def extract_chroma_features(
 
 
 def extract_zero_crossing_rate(
-        audio_data: np.ndarray, 
+        audio_data: np.ndarray,
         features: pd.Series
     ) -> pd.Series:
 

@@ -1,7 +1,7 @@
 from pydantic import BaseModel
 
 class Track(BaseModel):
-    db_id: int
+    db_id: int | None = None
     track_id: int
     track_path: str
     track_title: str

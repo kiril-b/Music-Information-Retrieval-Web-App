@@ -1,26 +1,10 @@
 import pandas as pd
 import tensorflow as tf
-from fastapi import UploadFile
 
-from src.service import feature_extraction
 from src.utils import constants
 
 
-async def classify_track(file: UploadFile) -> pd.DataFrame:
-
-    """
-    Classify a music track based on its features.
-
-    Args:
-        file (UploadFile): The audio file to classify.
-
-    Returns:
-        pd.DataFrame: A DataFrame containing the predicted genre probabilities.
-    """
-
-    # Extracting the features
-    track_x = await feature_extraction.extract_features(file)
-
+def classify_track(track_x: pd.DataFrame) -> pd.DataFrame:
     # Loading the model
     mlp_clf = tf.keras.models.load_model(constants.MODEL_SERIAZLIATION_PATH)
 

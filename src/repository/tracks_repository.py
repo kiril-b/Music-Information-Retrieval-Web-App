@@ -92,7 +92,8 @@ def get_track_by_id(
 
 
 def get_most_similar_tracks(
-        track_id: int, 
+        track_id: int | None = None,
+        track_embedding: list[float] | None = None,
         limit: int = 10, 
         exact_search: bool = False,
         with_payload: bool = True, 
@@ -101,30 +102,52 @@ def get_most_similar_tracks(
     ) -> list[ScoredPoint]:
 
     """
-    Retrieve a list of tracks similar to a given track.
+    Retrieve a list of the most similar tracks to the given input, either by track ID or track embedding.
 
     Args:
-        track_id (int): The unique identifier of the query track.
+        track_id (int | None): The ID of the track for which to find similar tracks. Set to None if using track_embedding.
+        track_embedding (list[float] | None): The embedding vector of the track for which to find similar tracks.
+            Set to None if using track_id.
         limit (int): The maximum number of similar tracks to retrieve. Default is 10.
-        exact_search (bool): Whether to perform an exact search. Default is False.
-        with_payload (bool): Whether to include payload in the response. Default is True.
-        with_vectors (bool): Whether to include vectors in the response. Default is False.
-        exact_match_filter (dict[str, Any] | None): Filters for exact matches on track attributes. Default is None.
+        exact_search (bool): Whether to perform an exact search or not. Default is False.
+        with_payload (bool): Whether to include payload data in the results. Default is True.
+        with_vectors (bool): Whether to include vector data in the results. Default is False.
+        exact_match_filter (dict[str, Any] | None): A dictionary specifying exact match filters for query clauses.
+            Set to None if no exact match filters are needed.
 
     Returns:
-        list[ScoredPoint]: A list of ScoredPoint objects representing similar tracks.
+        list[ScoredPoint]: A list of ScoredPoint objects representing the most similar tracks found.
+
+    Raises:
+        ValueError: If both track_id and track_embedding are provided or if neither is provided.
+        DatabaseError: If a track with the provided track_id does not exist in the database.
+
+    Example:
+        To find the most similar tracks to a given track embedding:
+        >>> embedding = [0.1, 0.2, 0.3]
+        >>> similar_tracks = get_most_similar_tracks(track_embedding=embedding)
+
+        To find the most similar tracks to a track by its ID:
+        >>> track_id = 12345
+        >>> similar_tracks = get_most_similar_tracks(track_id=track_id)
     """
 
-    query_track = get_track_by_id(track_id=track_id, with_payload=False, with_vectors=True)
+    if track_id and track_embedding:
+        raise ValueError('Only one of [track_id, track_embedding] can be non-None')
+    
+    if track_id:
+        query_track = get_track_by_id(track_id=track_id, with_payload=False, with_vectors=True)  # noqa: E501
 
-    if query_track is None:
-        raise DatabaseError(f'Track with id: {track_id} does not exist.')
+        if query_track is None:
+            raise DatabaseError(f'Track with id: {track_id} does not exist.')
+
+        track_embedding = query_track.vector
 
     must_clauses = generate_must_clauses(exact_match_filter)
 
     return client.search(
         collection_name=COLLECTION_NAME,
-        query_vector=query_track.vector,
+        query_vector=track_embedding,
         query_filter=models.Filter(must=must_clauses),
         search_params=models.SearchParams(exact=exact_search),
         limit=limit,
