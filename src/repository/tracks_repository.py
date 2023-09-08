@@ -6,7 +6,7 @@ from dotenv import load_dotenv
 from qdrant_client import QdrantClient, models
 from qdrant_client.http.models.models import Record, ScoredPoint
 
-from src.models.exceptions.database_error_exception import DatabaseError
+from src.models.exceptions.exceptions import DatabaseError, InvalidAttributeCombination
 from src.utils.repo_utils import generate_must_clauses
 from src.models.enumerations import TrackFields
 
@@ -21,6 +21,8 @@ def get_tracks(
     exact_match_filter: dict[str, Any] = None,
     track_listens_lower: int | None = None,
     track_listens_upper: int | None = None,
+    client: QdrantClient = client,
+    collection_name: str = COLLECTION_NAME,
 ) -> tuple[list[Record], int | None]:
     """
     Retrieve a list of tracks based on various filters.
@@ -31,20 +33,25 @@ def get_tracks(
         exact_match_filter (dict[str, Any]): Filters for exact matches on track attributes. Default is None. Format of entries: (attribute_name, value)
         track_listens_lower (int | None): Lower bound for track listens count filter. Default is None.
         track_listens_upper (int | None): Upper bound for track listens count filter. Default is None.
+        client (QdrantClient): The QdrantClient instance to use. Default is the global client instance.
+        collection_name (str): The name of the Qdrant collection to query. Default is the global collection name.
 
     Returns:
         tuple[list[Record], int | None]: A tuple containing a list of records (tracks) and the index of the track on the next page.
     """
 
-    must_clauses = generate_must_clauses(exact_match_filter) + [
-        models.FieldCondition(
-            key="meta_track_listens",
-            range=models.Range(gt=track_listens_lower, lt=track_listens_upper),
-        )
-    ]
+    must_clauses = generate_must_clauses(exact_match_filter)
+
+    if not (track_listens_lower is None and track_listens_upper is None):
+        must_clauses += [
+            models.FieldCondition(
+                key="meta_track_listens",
+                range=models.Range(gt=track_listens_lower, lt=track_listens_upper),
+            )
+        ]
 
     return client.scroll(
-        collection_name=COLLECTION_NAME,
+        collection_name=collection_name,
         offset=offset,
         limit=limit,
         scroll_filter=models.Filter(must=must_clauses),
@@ -54,7 +61,11 @@ def get_tracks(
 
 
 def get_track_by_id(
-    track_id: int, with_payload: bool = True, with_vectors: bool = False
+    track_id: int,
+    with_payload: bool = True,
+    with_vectors: bool = False,
+    client: QdrantClient = client,
+    collection_name: str = COLLECTION_NAME,
 ) -> Record | None:
     """
     Retrieve a track by its ID.
@@ -63,13 +74,16 @@ def get_track_by_id(
         track_id (int): The unique identifier of the track.
         with_payload (bool): Whether to include payload in the response. Default is True.
         with_vectors (bool): Whether to include vectors in the response. Default is False.
+        client (QdrantClient): The QdrantClient instance to use. Default is the global client instance.
+        collection_name (str): The name of the Qdrant collection to query. Default is the global collection name.
+
 
     Returns:
         Record | None: The retrieved track as a Record object, or None if the track doesn't exist.
     """
 
     tracks: list[Record] = client.retrieve(
-        collection_name=COLLECTION_NAME,
+        collection_name=collection_name,
         ids=[track_id],
         with_payload=with_payload,
         with_vectors=with_vectors,
@@ -91,6 +105,8 @@ def get_most_similar_tracks(
     with_payload: bool = True,
     with_vectors: bool = False,
     exact_match_filter: dict[str, Any] | None = None,
+    client: QdrantClient = client,
+    collection_name: str = COLLECTION_NAME,
 ) -> list[ScoredPoint]:
     """
     Retrieve a list of the most similar tracks to the given input, either by track ID or track embedding.
@@ -105,21 +121,30 @@ def get_most_similar_tracks(
         with_vectors (bool): Whether to include vector data in the results. Default is False.
         exact_match_filter (dict[str, Any] | None): A dictionary specifying exact match filters for query clauses.
             Set to None if no exact match filters are needed.
+        client (QdrantClient): The QdrantClient instance to use. Default is the global client instance.
+        collection_name (str): The name of the Qdrant collection to query. Default is the global collection name.
+
 
     Returns:
         list[ScoredPoint]: A list of ScoredPoint objects representing the most similar tracks found.
 
     Raises:
-        ValueError: If both track_id and track_embedding are provided or if neither is provided.
+        InvalidAttributeCombination: If both track_id and track_embedding are provided or if neither is provided.
         DatabaseError: If a track with the provided track_id does not exist in the database.
     """
 
-    if track_id and track_embedding:
-        raise ValueError("Only one of [track_id, track_embedding] can be non-None")
+    if track_id is not None and track_embedding is not None:
+        raise InvalidAttributeCombination(
+            "Only one of [track_id, track_embedding] can be non-None"
+        )
 
-    if track_id:
+    if track_id is not None:
         query_track = get_track_by_id(
-            track_id=track_id, with_payload=False, with_vectors=True
+            client=client,
+            collection_name=collection_name,
+            track_id=track_id,
+            with_payload=False,
+            with_vectors=True,
         )  # noqa: E501
 
         if query_track is None:
@@ -130,7 +155,7 @@ def get_most_similar_tracks(
     must_clauses = generate_must_clauses(exact_match_filter)
 
     return client.search(
-        collection_name=COLLECTION_NAME,
+        collection_name=collection_name,
         query_vector=track_embedding,
         query_filter=models.Filter(must=must_clauses),
         search_params=models.SearchParams(exact=exact_search),
@@ -141,10 +166,30 @@ def get_most_similar_tracks(
 
 
 def get_tracks_full_text_match(
-    match_string: str, offset: int, limit: int, enum_field: TrackFields
-) -> list[Record]:
+    match_string: str,
+    offset: int,
+    limit: int,
+    enum_field: TrackFields,
+    client: QdrantClient = client,
+    collection_name: str = COLLECTION_NAME,
+) -> tuple[list[Record], int | None]:
+    """
+    Retrieve tracks with full-text matching for a specific field.
+
+    Args:
+        match_string (str): The string to match against the specified field.
+        offset (int): The starting index for pagination.
+        limit (int): The maximum number of tracks to retrieve.
+        enum_field (TrackFields): An enumeration representing the field to match against.
+        client (QdrantClient): The QdrantClient instance to use. Default is the global client instance.
+        collection_name (str): The name of the Qdrant collection to query. Default is the global collection name.
+
+    Returns:
+        tuple[list[Record], int | None]: A tuple containing a list of records (tracks) and the index of the track on the next page.
+    """
+
     return client.scroll(
-        collection_name=COLLECTION_NAME,
+        collection_name=collection_name,
         offset=offset,
         limit=limit,
         with_payload=True,
@@ -160,5 +205,18 @@ def get_tracks_full_text_match(
     )
 
 
-def get_number_of_datapoints() -> int:
-    return client.get_collection(collection_name=COLLECTION_NAME).points_count
+def get_number_of_datapoints(
+    client: QdrantClient = client, collection_name: str = COLLECTION_NAME
+) -> int:
+    """
+    Get the total number of data points in the specified collection.
+
+    Args:
+        client (QdrantClient): The QdrantClient instance to use. Default is the global client instance.
+        collection_name (str): The name of the Qdrant collection. Default is the global collection name.
+
+    Returns:
+        int: The total number of data points in the collection.
+    """
+
+    return client.get_collection(collection_name=collection_name).points_count
