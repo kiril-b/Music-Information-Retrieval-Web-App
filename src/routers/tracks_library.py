@@ -15,7 +15,9 @@ tracks_library_router = APIRouter()
 def get_tracks_by_name(
     track_name: str, offset: int = 0, limit: int | None = None
 ) -> list[Track]:
-    return track_operations.get_tracks_by_full_text_match(track_name, offset, limit, TrackFields.TRACK_TITLE)
+    return track_operations.get_tracks_by_full_text_match(
+        track_name, offset, limit, TrackFields.TRACK_TITLE
+    )
 
 
 @tracks_library_router.get(
@@ -25,7 +27,9 @@ def get_tracks_by_name(
 def get_tracks_by_artist(
     artist_name: str, offset: int = 0, limit: int | None = None
 ) -> list[Track]:
-    return track_operations.get_tracks_by_full_text_match(artist_name, offset, limit, TrackFields.ARTIST_NAME)
+    return track_operations.get_tracks_by_full_text_match(
+        artist_name, offset, limit, TrackFields.ARTIST_NAME
+    )
 
 
 @tracks_library_router.get(
@@ -55,7 +59,6 @@ def get_tracks_pagination(
             k: v for k, v in exact_match_filter.items() if v is not None
         },
     )
-
 
 
 @tracks_library_router.get("/similar_tracks")

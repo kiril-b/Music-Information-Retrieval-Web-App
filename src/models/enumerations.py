@@ -20,7 +20,14 @@ class GenreEnum(str, Enum):
     OLD_TIME_HISTORIC = "Old-Time / Historic"
 
 
+# TODO: Change these feilds to match the names of the attributes in the db
 class TrackFields(str, Enum):
+    DB_ID = "db_id"
+    TRACK_ID = "track_id"
     GENRE = "meta_genre_top"
-    ARTIST_NAME = "meta_artist_name"
+    TRACK_PATH = "meta_track_path"
     TRACK_TITLE = "meta_track_title"
+    ARTIST_NAME = "meta_artist_name"
+    TRACK_LISTENS = "meta_track_listens"
+    TRACK_DURATION = "meta_track_duration"
+    SIMILARITY_SCORE = "similarity_score"

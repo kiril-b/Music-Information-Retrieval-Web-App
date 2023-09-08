@@ -47,7 +47,6 @@ def get_tracks(
 def get_tracks_by_full_text_match(
     match_string: str, offset: int, limit: int | None, enum_field: TrackFields
 ) -> list[Track]:
-    
     """
     Retrieve tracks that have a full-text match with a given string in a specified field.
 
@@ -70,11 +69,9 @@ def get_tracks_by_full_text_match(
     return [model_creation.record_to_track(record) for record in tracks]
 
 
-
 def find_n_most_similar_tracks_by_id(
     track_id: int, n: int, exact_match_filter: dict[str, Any] | None = None
 ) -> list[ScoredTrack]:
-    
     """
     Find the top N most similar tracks to a track by its ID.
 
@@ -102,7 +99,6 @@ def find_n_most_similar_tracks_by_id(
 def find_n_most_similar_tracks_by_embedding(
     track_embedding: list[float], n: int
 ) -> list[ScoredTrack]:
-    
     """
     Find the top N most similar tracks based on a given track embedding.
 
@@ -144,7 +140,6 @@ def get_track_by_id(track_id: int) -> Track:
 async def clf_and_most_similar_tracks(
     file: UploadFile, top_n_genres: int, top_n_similar: int
 ) -> UploadedTrack:
-    
     """
     Perform genre prediction and find the most similar tracks for an uploaded track file.
 
@@ -156,7 +151,7 @@ async def clf_and_most_similar_tracks(
     Returns:
         UploadedTrack: An UploadedTrack object containing the most similar tracks and genre predictions.
     """
-    
+
     track_x = await feature_extraction.extract_features(file)
 
     # Genre Prediction

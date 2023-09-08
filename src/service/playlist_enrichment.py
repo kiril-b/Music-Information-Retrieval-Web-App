@@ -37,7 +37,9 @@ def enrich(track_ids: list[int]) -> list[Track]:
         # Choose the number of similar tracks to consider
         num_tracks = np.random.randint(1, 6)
         # Append the new points similar to the one in the query
-        enriched_playlist_points += np.random.choice(most_similar_for_track, num_tracks, replace=False).tolist()
+        enriched_playlist_points += np.random.choice(
+            most_similar_for_track, num_tracks, replace=False
+        ).tolist()
 
     return [
         Track(**model_creation.record_to_track(scored_point).dict())

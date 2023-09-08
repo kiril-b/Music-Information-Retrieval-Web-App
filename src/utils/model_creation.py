@@ -1,6 +1,7 @@
 from qdrant_client.http.models.models import Record, ScoredPoint
 
 from src.models.models import Track, ScoredTrack
+from src.models.enumerations import TrackFields
 
 
 def record_to_track(record: Record | ScoredPoint) -> Track | ScoredTrack:
@@ -25,15 +26,17 @@ def record_to_track(record: Record | ScoredPoint) -> Track | ScoredTrack:
             'The record does not have payload. Make sure the fetching from the DB is done with "with_payload=True"'
         )
 
+    # TODO: Use the enum for attribute names
+    # The keys of this dict must match the pydantic model
     track_data = {
         "db_id": record.id,
-        "track_id": record.payload["track_id"],
-        "track_path": "track path",
-        "track_title": record.payload["meta_track_title"],
-        "artist_name": record.payload["meta_artist_name"],
-        "track_duration": record.payload["meta_track_duration"],
-        "track_genre": record.payload["meta_genre_top"],
-        "track_listens": record.payload["meta_track_listens"],
+        "track_id": record.payload[TrackFields.TRACK_ID.value],
+        "track_path": "./src/audio/Kid Bloom Cowboy Official Visualizer.mp3",
+        "track_title": record.payload[TrackFields.TRACK_TITLE.value],
+        "artist_name": record.payload[TrackFields.ARTIST_NAME.value],
+        "track_duration": record.payload[TrackFields.TRACK_DURATION.value],
+        "track_genre": record.payload[TrackFields.GENRE.value],
+        "track_listens": record.payload[TrackFields.TRACK_LISTENS.value],
     }
 
     if isinstance(record, Record):
