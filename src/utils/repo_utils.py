@@ -1,6 +1,6 @@
 from typing import Any
 
-from qdrant_client import models
+from qdrant_client import QdrantClient, models
 
 
 def generate_must_clauses(
@@ -28,3 +28,20 @@ def generate_must_clauses(
         ]
 
     return []
+
+
+def populate_db_test(
+    qdrant_client: QdrantClient,
+    collection_name: str,
+    vectors: list[list[int]],
+    payloads: list[dict[str, Any]] | None = None,
+):
+    points = list()
+    point_id = 0
+    for p, v in zip(payloads or [None] * len(vectors), vectors):
+        point = models.PointStruct(id=point_id, vector=list(map(float, v)))
+        if p:
+            point.payload = p
+        points.append(point)
+        point_id += 1
+    qdrant_client.upsert(collection_name=collection_name, points=points)

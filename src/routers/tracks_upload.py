@@ -5,7 +5,6 @@ from src.models.models import UploadedTrack
 
 from src.service import track_operations
 from src.utils.constants import NUMBER_OF_GENRES
-from src.service import track_operations
 
 tracks_upload_router = APIRouter()
 

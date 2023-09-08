@@ -7,3 +7,6 @@ ipython
 types-requests
 seaborn
 matplotlib
+httpx
+pytest
+pytest-cov
