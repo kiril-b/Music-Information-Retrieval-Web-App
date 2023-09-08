@@ -2,6 +2,7 @@ import numpy as np
 import pandas as pd
 from scipy import stats
 
+from src.utils import constants
 
 def generate_columns() -> pd.MultiIndex:
     """
@@ -48,3 +49,14 @@ def feature_stats(features: pd.Series, name: str, values: np.ndarray) -> pd.Seri
     features[name, "kurtosis"] = stats.kurtosis(values, axis=1)
 
     return features
+
+
+def check_feature_ordering(x: pd.DataFrame):
+
+    def ordering_key(item):
+        return constants.SCALER_FEATURES_ORDER.index(item[0])
+
+    columns = generate_columns().values
+    columns_ordered = sorted(columns, key=ordering_key)
+
+    return x.columns.values.tolist() == columns_ordered

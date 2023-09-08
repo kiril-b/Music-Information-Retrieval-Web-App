@@ -2,6 +2,7 @@ import pandas as pd
 import tensorflow as tf
 
 from src.utils import constants
+from src.utils.feature_extraction import check_feature_ordering
 
 
 def classify_track(track_x: pd.DataFrame) -> pd.DataFrame:
@@ -15,6 +16,11 @@ def classify_track(track_x: pd.DataFrame) -> pd.DataFrame:
         pd.DataFrame: A DataFrame containing the classification results for the input track.
             The columns represent class labels, and the values are the corresponding probabilities.
     """
+    if not check_feature_ordering(track_x):
+        raise ValueError(
+            """The ordering of the features of the passed dataframe do not match 
+            the ordering of the features on which the model was trained."""
+        )
 
     # Loading the model
     mlp_clf = tf.keras.models.load_model(constants.MODEL_SERIAZLIATION_PATH)
