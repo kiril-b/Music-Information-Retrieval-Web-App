@@ -1,5 +1,6 @@
 from typing import Annotated
-from fastapi import APIRouter, Query
+from fastapi import APIRouter, HTTPException, Query
+from src.models.exceptions.exceptions import DatabaseError
 
 from src.service import track_operations, playlist_enrichment
 from src.models.models import ScoredTrack, Track
@@ -13,10 +14,12 @@ tracks_library_router = APIRouter()
     description="Performs Full Text Match on the track title field in the db",
 )
 def get_tracks_by_name(
-    track_name: str, offset: int = 0, limit: int | None = None
+    track_title: str,
+    offset: Annotated[int, Query(ge=0)] = 0,
+    limit: Annotated[int | None, Query(ge=1)] = None,
 ) -> list[Track]:
     return track_operations.get_tracks_by_full_text_match(
-        track_name, offset, limit, TrackFields.TRACK_TITLE
+        track_title, offset, limit, TrackFields.TRACK_TITLE
     )
 
 
@@ -25,7 +28,9 @@ def get_tracks_by_name(
     description="Performs Full Text Match on the track artist field in the db",
 )
 def get_tracks_by_artist(
-    artist_name: str, offset: int = 0, limit: int | None = None
+    artist_name: str,
+    offset: Annotated[int, Query(ge=0)] = 0,
+    limit: Annotated[int | None, Query(ge=1)] = None,
 ) -> list[Track]:
     return track_operations.get_tracks_by_full_text_match(
         artist_name, offset, limit, TrackFields.ARTIST_NAME
@@ -39,7 +44,7 @@ def get_tracks_by_artist(
 )
 def get_tracks_pagination(
     offset: Annotated[int, Query(ge=0)],
-    limit: Annotated[int, Query(ge=0)],
+    limit: Annotated[int, Query(ge=1)],
     track_listens_lower_bound: Annotated[int | None, Query(ge=0)] = None,
     track_listens_upper_bound: Annotated[int | None, Query(ge=0)] = None,
     genre: GenreEnum | None = None,
@@ -63,7 +68,7 @@ def get_tracks_pagination(
 
 @tracks_library_router.get("/similar_tracks")
 def get_most_similar_tracks(
-    track_id: int,
+    track_id: Annotated[int, Query(ge=0)],
     number_of_similar_tracks: Annotated[int, Query(ge=1)] = 10,
     artist_name: str | None = None,
 ) -> list[ScoredTrack]:
@@ -73,20 +78,34 @@ def get_most_similar_tracks(
         ]
     )
 
-    return track_operations.find_n_most_similar_tracks_by_id(
-        track_id=track_id,
-        n=number_of_similar_tracks,
-        exact_match_filter={
-            k: v for k, v in exact_match_filter.items() if v is not None
-        },
-    )
+    try:
+        return track_operations.find_n_most_similar_tracks_by_id(
+            track_id=track_id,
+            n=number_of_similar_tracks,
+            exact_match_filter={
+                k: v for k, v in exact_match_filter.items() if v is not None
+            },
+        )
+    except DatabaseError as dbe:
+        raise HTTPException(status_code=404, detail=dbe.message)
 
 
 @tracks_library_router.get("/{track_id}")
 def get_track_by_id(track_id: int) -> Track:
-    return track_operations.get_track_by_id(track_id=track_id)
+    if track_id < 0:
+        raise HTTPException(status_code=400, detail="All track IDs must be positive integers")
+    try:
+        return track_operations.get_track_by_id(track_id=track_id)
+    except DatabaseError as dbe:
+        raise HTTPException(status_code=404, detail=dbe.message)
 
 
 @tracks_library_router.post("/enrich_playlist")
 def enrich_playlist(track_ids: list[int]) -> list[Track]:
-    return playlist_enrichment.enrich(track_ids)
+    if any(id < 0 for id in track_ids):
+        raise HTTPException(status_code=400, detail="All track IDs must be positive integers")
+    
+    try:
+        return playlist_enrichment.enrich(track_ids)
+    except DatabaseError as dbe:
+        raise HTTPException(status_code=404, detail=dbe.message)

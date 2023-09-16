@@ -1,6 +1,7 @@
 from typing import Annotated
 from fastapi import APIRouter, HTTPException, Query, UploadFile
 from fastapi.responses import FileResponse
+from src.models.exceptions.exceptions import DatabaseError
 from src.models.models import UploadedTrack
 
 from src.service import track_operations
@@ -11,11 +12,16 @@ tracks_upload_router = APIRouter()
 
 @tracks_upload_router.get("/get_audio/{track_id}")
 async def get_audio(track_id: int):
-    track = track_operations.get_track_by_id(track_id)
+    if track_id < 0:
+        raise HTTPException(status_code=400, detail="The ID of the track must be a positive integer")
+    try:
+        track = track_operations.get_track_by_id(track_id)
+    except DatabaseError as dbe:
+        raise HTTPException(status_code=404, detail=dbe.message)
 
     try:
-        # return FileResponse(audio_file_path, media_type='audio/mpeg')
-        return FileResponse(track.track_path)
+        return FileResponse(track.track_path, media_type='audio/mpeg')
+        # return FileResponse(track.track_path)
     except FileNotFoundError:
         raise HTTPException(status_code=404, detail="Track not found")
 

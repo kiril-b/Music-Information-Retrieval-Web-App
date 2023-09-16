@@ -43,30 +43,6 @@ async def extract_features(file: UploadFile, scale: bool = True) -> pd.DataFrame
     return features_df[constants.SCALER_FEATURES_ORDER]
 
 
-def raw_features_to_df(
-    track_name: str,
-    chroma: np.ndarray,
-    zcr: np.ndarray,
-    rmse: np.ndarray,
-    spectral_contrast: np.ndarray,
-    spectral_rolloff: np.ndarray,
-    mfcc: np.ndarray,
-) -> pd.DataFrame:
-    features = pd.Series(
-        index=generate_columns(), dtype=np.float32, name=f"track_{track_name}"
-    )
-
-    features = feature_stats(features=features, name="chroma_cqt", values=chroma)
-    features = feature_stats(features=features, name="zcr", values=zcr)
-    features = feature_stats(features=features, name="rmse", values=rmse)
-    features = feature_stats(features=features, name="spectral_contrast", values=spectral_contrast)  # noqa: E501
-    features = feature_stats(features=features, name="spectral_rolloff", values=spectral_rolloff)  # noqa: E501
-    features = feature_stats(features=features, name="mfcc", values=mfcc)
-
-    features_df = features.to_frame().T
-    return features_df
-
-
 def extract_audio_features_raw(
     audio_data: np.ndarray, sample_rate: float
 ) -> tuple[np.ndarray, np.ndarray, np.ndarray, np.ndarray, np.ndarray, np.ndarray]:
@@ -96,11 +72,28 @@ def extract_chroma_features(audio_data: np.ndarray, sample_rate: int) -> np.ndar
         )
     )
 
-    assert cqt.shape[0] == 7 * 12
-    assert (
-        np.ceil(len(audio_data) / 512)
-        <= cqt.shape[1]
-        <= np.ceil(len(audio_data) / 512) + 1
+    return librosa.feature.chroma_cqt(C=cqt, n_chroma=12, n_octaves=7)
+
+
+def raw_features_to_df(
+    track_name: str,
+    chroma: np.ndarray,
+    zcr: np.ndarray,
+    rmse: np.ndarray,
+    spectral_contrast: np.ndarray,
+    spectral_rolloff: np.ndarray,
+    mfcc: np.ndarray,
+) -> pd.DataFrame:
+    features = pd.Series(
+        index=generate_columns(), dtype=np.float32, name=f"track_{track_name}"
     )
 
-    return librosa.feature.chroma_cqt(C=cqt, n_chroma=12, n_octaves=7)
+    features = feature_stats(features=features, name="chroma_cqt", values=chroma)
+    features = feature_stats(features=features, name="zcr", values=zcr)
+    features = feature_stats(features=features, name="rmse", values=rmse)
+    features = feature_stats(features=features, name="spectral_contrast", values=spectral_contrast)  # noqa: E501
+    features = feature_stats(features=features, name="spectral_rolloff", values=spectral_rolloff)  # noqa: E501
+    features = feature_stats(features=features, name="mfcc", values=mfcc)
+
+    features_df = features.to_frame().T
+    return features_df

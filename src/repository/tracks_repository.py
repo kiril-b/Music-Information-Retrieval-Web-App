@@ -43,12 +43,15 @@ def get_tracks(
     must_clauses = generate_must_clauses(exact_match_filter)
 
     if not (track_listens_lower is None and track_listens_upper is None):
-        must_clauses += [
+        must_clauses.append(
             models.FieldCondition(
-                key="meta_track_listens",
-                range=models.Range(gt=track_listens_lower, lt=track_listens_upper),
+                key=TrackFields.TRACK_LISTENS.value,
+                range=models.Range(
+                    gte=float(track_listens_lower) if track_listens_lower else None, 
+                    lte=float(track_listens_upper) if track_listens_upper else None
+                ),
             )
-        ]
+        )
 
     return client.scroll(
         collection_name=collection_name,
@@ -92,7 +95,7 @@ def get_track_by_id(
     if len(tracks) == 1:
         return tracks[0]
     elif len(tracks) == 0:
-        return None
+        raise DatabaseError(f"Track with id: {track_id} does not exist.")
     else:
         raise DatabaseError("Multiple tracks with the same ID found.")
 
@@ -133,9 +136,14 @@ def get_most_similar_tracks(
         DatabaseError: If a track with the provided track_id does not exist in the database.
     """
 
+    if track_id is None and track_embedding is None:
+        raise InvalidAttributeCombination(
+            "Exactly One of  `track_id` or `track_embedding` has to be non-None"
+        )
+
     if track_id is not None and track_embedding is not None:
         raise InvalidAttributeCombination(
-            "Only one of [track_id, track_embedding] can be non-None"
+            "Only one of `track_id` or `track_embedding` can be non-None"
         )
 
     if track_id is not None:
