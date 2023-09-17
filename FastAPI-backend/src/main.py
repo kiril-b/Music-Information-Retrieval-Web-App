@@ -2,6 +2,7 @@ import uvicorn
 from fastapi import FastAPI, Response
 from src.routers.tracks_library import tracks_library_router
 from src.routers.tracks_upload import tracks_upload_router
+from fastapi.middleware.cors import CORSMiddleware
 
 app = FastAPI()
 
@@ -17,6 +18,19 @@ app.include_router(
 app.include_router(
     tracks_upload_router, prefix="/tracks-upload", tags=["tracks_upload_router"]
 )
+
+origins = [
+    "http://localhost:3000", 
+]
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=origins,
+    allow_credentials=True,
+    allow_methods=["*"],  # You can specify HTTP methods here
+    allow_headers=["*"],  # You can specify HTTP headers here
+)
+
 
 if __name__ == "__main__":
     uvicorn.run(app, host="0.0.0.0", port=8000)
