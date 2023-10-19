@@ -1,21 +1,21 @@
 .btn {
-    background-color: transparent;
-    color: white;
-    font-weight: bold;
-    text-decoration: none;
-    border: none;
-    cursor: pointer;
-    transition: text-decoration 0.3s, color 0.3s;
-    font-size: 23px;
-  }
-  
-  .btn:hover {
-    text-decoration: underline;
-    color: #FAACCF;
-  }
+  background-color: transparent;
+  color: white;
+  font-weight: bold;
+  text-decoration: none;
+  border: none;
+  cursor: pointer;
+  transition: text-decoration 0.3s, color 0.3s;
+  font-size: 23px;
+}
 
-  .clicked {
-    margin: 3rem;
-    text-decoration: underline;
-    color: #FAACCF;
-  }
+.btn:hover {
+  text-decoration: underline;
+  color: #FAACCF;
+}
+
+.clicked {
+  margin: 3rem;
+  text-decoration: underline;
+  color: #FAACCF;
+}
