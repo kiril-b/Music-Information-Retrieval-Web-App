@@ -1,0 +1,80 @@
+.modal-similar {
+  position: fixed;
+  left: 0;
+  top: 0;
+  width: 40%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.7);
+  overflow: auto;
+  z-index: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.modal-similar-content {
+  background: linear-gradient(to bottom, #ff5cad, #9647ff); 
+  padding: 20px;
+  padding-top: 80%;
+  border-radius: 10px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+  overflow-y: auto;
+  width: 100%;
+}
+
+.song-list {
+  list-style-type: none;
+  padding: 0;
+}
+
+.song-item {
+  margin-bottom: 20px;
+  border: 1px solid #ddd;
+  padding: 10px;
+  border-radius: 5px;
+  box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+  background: white; 
+}
+
+.song-title {
+  font-size: 18px;
+  font-weight: bold;
+  margin-bottom: 10px;
+  color: #ff5cad; 
+}
+
+.song-artist {
+  font-size: 16px;
+  margin-bottom: 5px;
+  color: #9647ff; 
+}
+
+.song-info {
+  font-size: 14px;
+  margin-bottom: 5px;
+  color: #333; 
+}
+
+.modal-similar-content h2 {
+  font-size: 24px;
+  font-weight: bold; 
+  color: white; 
+  margin-bottom: 10px;
+}
+
+.song_title{
+  font-weight: 860;
+  font-size: 28px;
+  color: #5f0448;
+}
+
+.modal-similar-close-button {
+  position: absolute;
+  top: 0;
+  right: 24px;
+  background: none;
+  border: none;
+  font-size: 25px;
+  cursor: pointer;
+  color: white;
+}

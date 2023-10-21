@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import Modal from '../Details/Modal';
+import SimilarTracks from '../Similar Tracks/SimilarTrack';
 
 function SearchLibrary() {
   const [tracks, setTracks] = useState([]);
@@ -18,6 +19,8 @@ function SearchLibrary() {
   });
 
   const [selectedTrackId, setSelectedTrackId] = useState(null);
+  const [selectedTrackTitle, setSelectedTrackTitle] = useState(null);
+
 
   const fetchData = (params) => {
     const apiUrl = 'http://localhost:8000/tracks-library/get_tracks_pagination';
@@ -75,6 +78,9 @@ function SearchLibrary() {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [modalDetails, setModalDetails] = useState(null);
 
+  const [isGetSimilarClicked, setGetSimilarClicked] = useState(false);
+  const [similarTracks, setSimilarTracks] = useState(null);
+
   const openModal = (details) => {
     setModalDetails(details);
     setIsModalOpen(true);
@@ -97,6 +103,31 @@ function SearchLibrary() {
         console.error('Error fetching track details:', error);
       });
   };
+
+  const openSimilarModal = (details) => {
+    setSimilarTracks(details);
+    setGetSimilarClicked(true);
+  };
+
+  const closeSimilarModal = () => {
+    console.log('closeSimilarModal is called');
+    setGetSimilarClicked(false);
+    console.log('called');
+  };
+
+  const handleGetSimilarTracks = (trackId, song_title) => {
+    setSelectedTrackId(trackId);
+    setSelectedTrackTitle(song_title);
+    fetch(`http://localhost:8000/tracks-library/similar_tracks?track_id=${trackId}&number_of_similar_tracks=5`)
+      .then((response) => response.json())
+      .then((data) => {
+        openSimilarModal(data);
+      })
+      .catch((error) => {
+        console.error('Error fetching similar tracks: ', error);
+      });
+  };
+
   useEffect(() => {
     if (pagination) {
       if (pagination.offset === 0) {
@@ -107,9 +138,8 @@ function SearchLibrary() {
       }
       console.log(tracks);
     }
-  }, [pagination.offset, modalDetails]);
+  }, [pagination.offset, modalDetails, similarTracks]);
 
-  console.log(isModalOpen);
 
   return (
     <div className="container mx-auto">
@@ -195,12 +225,20 @@ function SearchLibrary() {
                   className="bg-white p-4 my-2 rounded-md shadow-md flex justify-between"
                 >
                   {track.track_title} - {track.artist_name}
+                <div>
+                <button
+                    onClick={() => handleGetSimilarTracks(track.db_id, track.track_title)}
+                    className="bg-purple-600 hover:bg-purple-700 text-white px-2 py-1 rounded-md justify-end"
+                  >
+                    Get Similar Tracks
+                  </button>
                   <button
                     onClick={() => handleSeeDetails(track.db_id)}
                     className="bg-purple-600 hover:bg-purple-700 text-white px-2 py-1 ml-2 rounded-md"
                   >
                     See Details
                   </button>
+                </div>
                 </li>
               ))}
           </ul>
@@ -222,7 +260,10 @@ function SearchLibrary() {
       )}
 
       {isModalOpen && (
-        <Modal onClose={closeModal} details={modalDetails} />
+        <Modal onClose={() => closeModal()} details={modalDetails} />
+      )}
+      {isGetSimilarClicked && (
+        <SimilarTracks onCloseSimilar={() => closeSimilarModal()} details={similarTracks} song_title={selectedTrackTitle}/>
       )}
     </div>
   );
