@@ -21,10 +21,16 @@ function SearchLibrary() {
   const [selectedTrackId, setSelectedTrackId] = useState(null);
   const [selectedTrackTitle, setSelectedTrackTitle] = useState(null);
 
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [modalDetails, setModalDetails] = useState(null);
+
+  const [isGetSimilarClicked, setGetSimilarClicked] = useState(false);
+  const [similarTracks, setSimilarTracks] = useState(null);
+
+  const [tracker, setTracker] = useState(false);
 
   const fetchData = (params) => {
     const apiUrl = 'http://localhost:8000/tracks-library/get_tracks_pagination';
-
     const queryParams = { ...params, limit: pagination.limit, offset: pagination.offset };
 
     for (const key in queryParams) {
@@ -75,22 +81,14 @@ function SearchLibrary() {
     setFormData({ ...formData, [name]: value });
   };
 
-  const [isModalOpen, setIsModalOpen] = useState(false);
-  const [modalDetails, setModalDetails] = useState(null);
-
-  const [isGetSimilarClicked, setGetSimilarClicked] = useState(false);
-  const [similarTracks, setSimilarTracks] = useState(null);
-
   const openModal = (details) => {
     setModalDetails(details);
     setIsModalOpen(true);
   };
 
-
   const closeModal = () => {
     setIsModalOpen(false);
   };
-
 
   const handleSeeDetails = (trackId) => {
     setSelectedTrackId(trackId);
@@ -110,9 +108,7 @@ function SearchLibrary() {
   };
 
   const closeSimilarModal = () => {
-    console.log('closeSimilarModal is called');
     setGetSimilarClicked(false);
-    console.log('called');
   };
 
   const handleGetSimilarTracks = (trackId, song_title) => {
@@ -128,6 +124,27 @@ function SearchLibrary() {
       });
   };
 
+  const handleAddToLocalStorage = (trackId) => {
+    const existingList = JSON.parse(localStorage.getItem('selectedTracks')) || [];
+    if (!existingList.includes(trackId)) {
+      existingList.push(trackId);
+      localStorage.setItem('selectedTracks', JSON.stringify(existingList));
+    } else {
+      const updatedList = existingList.filter((id) => id !== trackId);
+      localStorage.setItem('selectedTracks', JSON.stringify(updatedList));
+    }
+    setTracker(!tracker);
+
+  };
+
+  const handleRemoveFromLocalStorage = (trackId) => {
+    const existingList = JSON.parse(localStorage.getItem('selectedTracks')) || [];
+    const updatedList = existingList.filter((id) => id !== trackId);
+    localStorage.setItem('selectedTracks', JSON.stringify(updatedList));
+    setTracker(!tracker);
+  };
+
+
   useEffect(() => {
     if (pagination) {
       if (pagination.offset === 0) {
@@ -136,9 +153,13 @@ function SearchLibrary() {
       } else {
         fetchData(pagination, formData);
       }
-      console.log(tracks);
     }
-  }, [pagination.offset, modalDetails, similarTracks]);
+  }, [pagination.offset, modalDetails, similarTracks, tracker]);
+
+  const isInLocalStorage = (trackId) => {
+    const existingList = JSON.parse(localStorage.getItem('selectedTracks')) || [];
+    return existingList.includes(trackId);
+  }
 
 
   return (
@@ -199,7 +220,6 @@ function SearchLibrary() {
               <option value="Rock">Rock</option>
               <option value="Soul-RnB">Soul-RnB</option>
               <option value="Spoken">Spoken</option>
-
             </select>
           </div>
           <div>
@@ -220,38 +240,54 @@ function SearchLibrary() {
           <ul>
             {tracks &&
               tracks.map((track) => (
-                <li
-                  key={track.db_id}
-                  className="bg-white p-4 my-2 rounded-md shadow-md flex justify-between"
-                >
-                  {track.track_title} - {track.artist_name}
-                <div>
-                <button
-                    onClick={() => handleGetSimilarTracks(track.db_id, track.track_title)}
-                    className="bg-purple-600 hover:bg-purple-700 text-white px-2 py-1 rounded-md justify-end"
-                  >
-                    Get Similar Tracks
-                  </button>
-                  <button
-                    onClick={() => handleSeeDetails(track.db_id)}
-                    className="bg-purple-600 hover:bg-purple-700 text-white px-2 py-1 ml-2 rounded-md"
-                  >
-                    See Details
-                  </button>
-                </div>
+                <li key={track.db_id} className="bg-white p-4 my-2 rounded-md shadow-md flex justify-between">
+                  <div className="flex content-center">
+                    {isInLocalStorage(track.db_id) ? (
+                      <button
+                        onClick={() => handleRemoveFromLocalStorage(track.db_id)}
+                        className="bg-purple-600 hover:bg-purple-800 text-white px-2 py-1 rounded-md justify"
+                      >
+                        -
+                      </button>
+                    ) : (
+                      <button
+                        onClick={() => handleAddToLocalStorage(track.db_id)}
+                        className="bg-pink-600 hover:bg-pink-800 text-white px-2 py-1 rounded-md justify"
+                      >
+                        +
+                      </button>
+                    )}
+                    <span className="p-2">
+                      {track.track_title} - {track.artist_name}
+                    </span>
+                  </div>
+                  <div>
+                    <button
+                      onClick={() => handleGetSimilarTracks(track.db_id, track.track_title)}
+                      className="bg-purple-600 hover:bg-purple-700 text-white px-2 py-1 rounded-md justify-end"
+                    >
+                      Get Similar Tracks
+                    </button>
+                    <button
+                      onClick={() => handleSeeDetails(track.db_id)}
+                      className="bg-purple-600 hover.bg-purple-700 text-white px-2 py-1 ml-2 rounded-md"
+                    >
+                      See Details
+                    </button>
+                  </div>
                 </li>
               ))}
           </ul>
           <div className="flex items-center">
             <button
               onClick={handlePrevPage}
-              className="bg-pink-600 hover:bg-pink-700 text-white px-4 py-2 rounded-md"
+              className="bg-pink-600 hover-bg-pink-700 text-white px-4 py-2 rounded-md"
             >
               Previous Page
             </button>
             <button
               onClick={handleNextPage}
-              className="bg-pink-600 hover:bg-pink-700 text-white px-4 py-2 rounded-md ms-3"
+              className="bg-pink-600 hover-bg-pink-700 text-white px-4 py-2 rounded-md ms-3"
             >
               Next Page
             </button>
@@ -263,7 +299,7 @@ function SearchLibrary() {
         <Modal onClose={() => closeModal()} details={modalDetails} />
       )}
       {isGetSimilarClicked && (
-        <SimilarTracks onCloseSimilar={closeSimilarModal} details={similarTracks} song_title={selectedTrackTitle} trackId={selectedTrackId}/>
+        <SimilarTracks onCloseSimilar={closeSimilarModal} details={similarTracks} song_title={selectedTrackTitle} trackId={selectedTrackId} />
       )}
     </div>
   );
