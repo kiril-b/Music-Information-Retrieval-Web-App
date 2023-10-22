@@ -263,7 +263,7 @@ function SearchLibrary() {
         <Modal onClose={() => closeModal()} details={modalDetails} />
       )}
       {isGetSimilarClicked && (
-        <SimilarTracks onCloseSimilar={() => closeSimilarModal()} details={similarTracks} song_title={selectedTrackTitle}/>
+        <SimilarTracks onCloseSimilar={closeSimilarModal} details={similarTracks} song_title={selectedTrackTitle} trackId={selectedTrackId}/>
       )}
     </div>
   );
