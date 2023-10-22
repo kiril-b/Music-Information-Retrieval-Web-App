@@ -4,38 +4,52 @@ import MusicNoteIcon from './MusicNoteIcon';
 import './App.css';
 import SearchByName from '../Search/SearchByArtistName';
 import SearchByTitle from '../Search/SearchByTitle';
-import Playlist from '../Playlist/Playlist';
 import LocalTrackModal from '../Playlist/Playlist';
+import TrackUpload from '../UploadSong/UploadSongForm';
+import UploadSongForm from '../UploadSong/UploadSongForm';
 
 function App() {
   const [showLibrarySearch, setShowLibrarySearch] = useState(false);
   const [showSearchByName, setShowSearchByName] = useState(false);
   const [showSearchByTitle, setShowSearchByTitle] = useState(false);
   const [openPlaylistModal, setOpenPlaylistModal] = useState(false);
+  const [showUploadSongForm, setShowUploadSongForm] = useState(false);
+
 
 
   const handleLibrarySearchClick = () => {
     setShowLibrarySearch(true);
     setShowSearchByName(false);
     setShowSearchByTitle(false);
+    setShowUploadSongForm(false);
   };
 
   const handleSearchByNameClick = () => {
     setShowLibrarySearch(false);
     setShowSearchByName(true);
     setShowSearchByTitle(false);
+    setShowUploadSongForm(false);
   };
 
   const handleSearchByTitleClick = () => {
     setShowLibrarySearch(false);
     setShowSearchByName(false);
     setShowSearchByTitle(true);
+    setShowUploadSongForm(false);
   };
 
   const handleHomeClick = () => {
     setShowLibrarySearch(false);
     setShowSearchByName(false);
     setShowSearchByTitle(false);
+    setShowUploadSongForm(false);
+  };
+
+  const handleUploadSongClick = () => {
+    setShowLibrarySearch(false);
+    setShowSearchByName(false);
+    setShowSearchByTitle(false);
+    setShowUploadSongForm(true);
   };
 
   const handleShowPlaylistClick = () => {
@@ -89,13 +103,20 @@ function App() {
     >
       Search By Title
     </button>
+    <button
+      onClick={handleUploadSongClick}
+      className={showUploadSongForm ? "hidden" : "btn"}
+      style={{ marginRight: '1rem'}}
+    >
+      Upload Song
+    </button>
   </div>
   <div className="marginRight" style={{ marginRight: '4rem' }}>
     {showLibrarySearch && <SearchLibrary />}
     {showSearchByName && <SearchByName />}
     {showSearchByTitle && <SearchByTitle />}
     {openPlaylistModal && <LocalTrackModal trackIds={localStorage.getItem('selectedTracks') || []} onClose={closePlaylistModal} />}
-
+    {showUploadSongForm && <UploadSongForm />}
   </div>
 </div>
 

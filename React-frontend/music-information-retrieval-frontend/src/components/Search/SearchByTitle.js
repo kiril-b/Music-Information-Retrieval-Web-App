@@ -30,13 +30,16 @@ function SearchByTitle() {
 
     return (
         <div className='p-4'>
-                <input
-                type="text"
-                className="p-2 border rounded-lg"
-                placeholder="Enter title"
-                value={title}
-                onChange={handleInputChange}
-            />
+            <label className='text-white p-3'>Enter title</label>
+               <input
+  type="text"
+  className="p-2 border rounded-lg text-white"
+  style={{ background: 'linear-gradient(to bottom, #ff5cad, #9647ff)' }}
+//   placeholder="Enter title"
+  value={title}
+  onChange={handleInputChange}
+/>
+
             <ul>
                 {tracks.map((track) => (
                      <li
