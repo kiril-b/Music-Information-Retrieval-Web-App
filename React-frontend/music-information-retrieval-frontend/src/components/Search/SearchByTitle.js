@@ -20,7 +20,7 @@ function SearchByTitle() {
                 })
                 .catch((error) => {
                     console.error('Error fetching data:', error);
-                }); 
+                });
         }
     };
 
@@ -30,25 +30,26 @@ function SearchByTitle() {
 
     return (
         <div className='p-4'>
-            <label className='text-white p-3'>Enter title</label>
-               <input
-  type="text"
-  className="p-2 border rounded-lg text-white"
-  style={{ background: 'linear-gradient(to bottom, #ff5cad, #9647ff)' }}
-//   placeholder="Enter title"
-  value={title}
-  onChange={handleInputChange}
-/>
+            <div className='grid'>
+            <label className='text-white' style={{fontSize: '25px', fontWeight: '800'}}>Enter title</label>
+            <input
+                type="text"
+                className="p-2 border rounded-lg text-white"
+                style={{ background: 'linear-gradient(to bottom, #ff5cad, #9647ff)', width: '25rem' }}
+                value={title}
+                onChange={handleInputChange}
+            />
+            </div>
 
             <ul>
                 {tracks.map((track) => (
-                     <li
-                  key={track.db_id}
-                  className="bg-white p-4 my-2 rounded-md shadow-md flex justify-between"
-                  style={{width: '44rem'}}
-                >
-                  {track.track_title} - {track.artist_name}
-                </li>
+                    <li
+                        key={track.db_id}
+                        className="bg-white p-4 my-2 rounded-md shadow-md flex justify-between"
+                        style={{ width: '44rem' }}
+                    >
+                        {track.track_title} - {track.artist_name}
+                    </li>
                 ))}
             </ul>
         </div>

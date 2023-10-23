@@ -9,7 +9,7 @@ function UploadSongForm() {
   const [mostSimilarTracks, setMostSimilarTracks] = useState([]);
   const [audioSrc, setAudioSrc] = useState(null);
   const [showPlayButton, setShowPlayButton] = useState(false);
-  const [indexOfPlaySong, setIndexOfPlaySong] = useState();
+  const [indexOfPlaySong, setIndexOfPlaySong] = useState(-1);
 
 
   const handleFileChange = (event) => {
@@ -96,7 +96,7 @@ function UploadSongForm() {
           <ul>
             {Object.entries(genrePrediction).map(([genre, percentage]) => (
               <li key={genre} className="genre-item">
-                {genre}: {percentage}%
+                {genre}: {Math.round(percentage)}%
               </li>
             ))}
           </ul>

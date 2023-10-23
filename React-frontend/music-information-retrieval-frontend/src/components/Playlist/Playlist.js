@@ -6,6 +6,8 @@ function LocalTrackModal({ trackIds, onClose }) {
   const [tracksPerPage] = useState(3);
   const [audioSrc, setAudioSrc] = useState(null);
   const [showPlayButton, setShowPlayButton] = useState(true);
+  const [indexOfPlaySong, setIndexOfPlaySong] = useState();
+  const [showAudioSrc, setShowAudioSrc] = useState(false);
 
   useEffect(() => {
     const fetchEnrichedPlaylist = async () => {
@@ -17,8 +19,6 @@ function LocalTrackModal({ trackIds, onClose }) {
           },
           body: trackIds,
         });
-
-        console.log(trackIds);
 
         if (response.ok) {
           const data = await response.json();
@@ -38,13 +38,14 @@ function LocalTrackModal({ trackIds, onClose }) {
 
   const handlePlayClick = (trackIndex) => {
     if (details[trackIndex] && details[trackIndex].track_id) {
-      fetch(`http://localhost:8000/tracks-upload/get_audio/${details[trackIndex].track_id}`)
+      fetch(`http://localhost:8000/tracks-upload/get_audio/${details[trackIndex].db_id}`)
         .then((response) => {
           if (response.status === 200) {
             response.blob().then((blob) => {
               const audioBlob = URL.createObjectURL(blob);
               setAudioSrc(audioBlob);
-              setShowPlayButton(false);
+              setShowAudioSrc(true);
+              setIndexOfPlaySong(trackIndex);
             });
           } else {
             console.error('Failed to fetch audio.');
@@ -59,12 +60,13 @@ function LocalTrackModal({ trackIds, onClose }) {
   const handlePageChange = (page) => {
     setCurrentPage(page);
     setAudioSrc(null);
-    setShowPlayButton(true);
   };
 
   const indexOfLastTrack = currentPage * tracksPerPage;
   const indexOfFirstTrack = indexOfLastTrack - tracksPerPage;
   const currentTracks = details.slice(indexOfFirstTrack, indexOfLastTrack);
+
+  console.log(indexOfPlaySong);
 
   return (
     <div className="modal-background">
@@ -90,7 +92,7 @@ function LocalTrackModal({ trackIds, onClose }) {
                     <p style={{ color: 'white' }}>Listens: {track.track_listens}</p>
                   </div>
                   <div className="mt-20 flex justify-end">
-                    {showPlayButton && (
+                    {showPlayButton && indexOfPlaySong !== (indexOfFirstTrack + index) && (
                       <button className="play-button" onClick={() => handlePlayClick(indexOfFirstTrack + index)}>
                         <svg
                           className="w-20 h-20 text-gray-800 dark:text-white"
@@ -109,11 +111,11 @@ function LocalTrackModal({ trackIds, onClose }) {
                         </svg>
                       </button>
                     )}
-                    {audioSrc && 
-                      <audio controls>
+                    {audioSrc && indexOfPlaySong === (indexOfFirstTrack + index) && showAudioSrc &&
+                      (<audio controls>
                         <source src={audioSrc} type="audio/mpeg" />
                         Your browser does not support the audio element.
-                      </audio>
+                      </audio>)
                     }
                   </div>
                 </div>

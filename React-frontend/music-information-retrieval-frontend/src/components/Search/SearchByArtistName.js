@@ -6,7 +6,6 @@ function SearchByName() {
     const apiUrl = 'http://localhost:8000/tracks-library/get_tracks/artist-name';
 
     useEffect(() => {
-        // Make the API request when the component mounts
         fetchData(artistName);
     }, [artistName]);
 
@@ -21,7 +20,7 @@ function SearchByName() {
                 })
                 .catch((error) => {
                     console.error('Error fetching data:', error);
-                }); 
+                });
         }
     };
 
@@ -31,22 +30,26 @@ function SearchByName() {
 
     return (
         <div className='p-4'>
+            <div className='grid'>
+                <label className='text-white' style={{ fontSize: '25px', fontWeight: '800' }}>Enter title</label>
                 <input
-                type="text"
-                className="p-2 border rounded-lg"
-                placeholder="Enter artist name"
-                value={artistName}
-                onChange={handleInputChange}
-            />
+                    type="text"
+                    className="p-2 border rounded-lg"
+                    placeholder="Enter artist name"
+                    value={artistName}
+                    onChange={handleInputChange}
+                    style={{ background: 'linear-gradient(to bottom, #ff5cad, #9647ff)', width: '25rem' }}
+                />
+            </div>
             <ul>
                 {tracks.map((track) => (
-                     <li
-                  key={track.db_id}
-                  className="bg-white p-4 my-2 rounded-md shadow-md flex justify-between"
-                  style={{width: '44rem'}}
-                >
-                  {track.track_title} - {track.artist_name}
-                </li>
+                    <li
+                        key={track.db_id}
+                        className="bg-white p-4 my-2 rounded-md shadow-md flex justify-between"
+                        style={{ width: '44rem' }}
+                    >
+                        {track.track_title} - {track.artist_name}
+                    </li>
                 ))}
             </ul>
         </div>
