@@ -5,7 +5,6 @@ import './App.css';
 import SearchByName from '../Search/SearchByArtistName';
 import SearchByTitle from '../Search/SearchByTitle';
 import LocalTrackModal from '../Playlist/Playlist';
-import TrackUpload from '../UploadSong/UploadSongForm';
 import UploadSongForm from '../UploadSong/UploadSongForm';
 
 function App() {
@@ -112,11 +111,11 @@ function App() {
             </button>
           </div>
           <div className="marginRight" style={{ marginRight: '4rem' }}>
-            {showLibrarySearch && <SearchLibrary />}
-            {showSearchByName && <SearchByName />}
-            {showSearchByTitle && <SearchByTitle />}
-            {openPlaylistModal && <LocalTrackModal trackIds={localStorage.getItem('selectedTracks') || []} onClose={closePlaylistModal} />}
-            {showUploadSongForm && <UploadSongForm />}
+            <span className='showLibrary'> {showLibrarySearch && <SearchLibrary />} </span>
+            <span className='showLibrary'> {showSearchByName && <SearchByName />} </span>
+            <span className='showLibrary'> {showSearchByTitle && <SearchByTitle />} </span>
+            <span className='showLibrary'> {openPlaylistModal && <LocalTrackModal trackIds={localStorage.getItem('selectedTracks') || []} onClose={closePlaylistModal} />} </span>
+            <span className='showLibrary'> {showUploadSongForm && <UploadSongForm />}  </span>
           </div>
         </div>
 
