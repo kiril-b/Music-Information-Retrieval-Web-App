@@ -4,7 +4,7 @@ import '@testing-library/jest-dom/extend-expect';
 import App from '../src/components/App/App';
 
 describe('App Component - unit tests', () => {
-  test('should Home button', () => {
+  test('should render Home button', () => {
     const { getByText } = render(<App />);
     expect(getByText('Home')).toBeInTheDocument();
   });
