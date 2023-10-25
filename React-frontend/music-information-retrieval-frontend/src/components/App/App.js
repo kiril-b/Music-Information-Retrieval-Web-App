@@ -111,14 +111,13 @@ function App() {
             </button>
           </div>
           <div className="marginRight" style={{ marginRight: '4rem' }}>
-            <span className='showLibrary'> {showLibrarySearch && <SearchLibrary />} </span>
-            <span className='showLibrary'> {showSearchByName && <SearchByName />} </span>
-            <span className='showLibrary'> {showSearchByTitle && <SearchByTitle />} </span>
-            <span className='showLibrary'> {openPlaylistModal && <LocalTrackModal trackIds={localStorage.getItem('selectedTracks') || []} onClose={closePlaylistModal} />} </span>
-            <span className='showLibrary'> {showUploadSongForm && <UploadSongForm />}  </span>
+            <span className='showLibrarySearch'> {showLibrarySearch && <SearchLibrary />} </span>
+            <span className='showSearchByName'> {showSearchByName && <SearchByName />} </span>
+            <span className='showSearchByTitle'> {showSearchByTitle && <SearchByTitle />} </span>
+            <span className='openPlaylistModal'> {openPlaylistModal && <LocalTrackModal trackIds={localStorage.getItem('selectedTracks') || []} onClose={closePlaylistModal} />} </span>
+            <span className='showUploadSongForm'> {showUploadSongForm && <UploadSongForm />}  </span>
           </div>
         </div>
-
       </div>
     </div>
   );

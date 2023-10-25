@@ -43,9 +43,6 @@
           .map((key) => `${key}=${queryParams[key]}`)
           .join('&');
 
-          console.log('----------------------------------');
-          console.log(apiUrl + queryString);
-          
         fetch(`${apiUrl}?${queryString}`)
           .then((response) => response.json())
           .then((data) => {

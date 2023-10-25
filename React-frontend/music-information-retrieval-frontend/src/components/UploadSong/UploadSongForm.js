@@ -9,7 +9,7 @@ function UploadSongForm() {
   const [mostSimilarTracks, setMostSimilarTracks] = useState([]);
   const [audioSrc, setAudioSrc] = useState(null);
   const [showPlayButton, setShowPlayButton] = useState(false);
-  const [indexOfPlaySong, setIndexOfPlaySong] = useState(-1);
+  const [indexOfPlaySong, setIndexOfPlaySong] = useState();
 
 
   const handleFileChange = (event) => {

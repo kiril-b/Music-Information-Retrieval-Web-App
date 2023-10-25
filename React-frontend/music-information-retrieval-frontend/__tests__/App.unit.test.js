@@ -60,5 +60,4 @@ describe('App Component - unit tests', () => {
     
   });
   
-
 });
