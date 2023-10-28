@@ -57,8 +57,6 @@
             console.error('Error fetching data:', error);
             setLoading(false);
           });
-
-        
       };
 
       const handleNextPage = () => {
@@ -136,7 +134,6 @@
           localStorage.setItem('selectedTracks', JSON.stringify(updatedList));
         }
         setTracker(!tracker);
-
       };
 
       const handleRemoveFromLocalStorage = (trackId) => {

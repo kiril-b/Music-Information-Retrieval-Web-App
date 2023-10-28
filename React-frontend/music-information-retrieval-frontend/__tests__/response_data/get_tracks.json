@@ -149,57 +149,7 @@
         "track_duration": 296,
         "track_genre": "Folk",
         "track_listens": 582
-      },
-      {
-        "db_id": 15,
-        "track_id": 140,
-        "track_path": "./src/audio/Kid Bloom Cowboy Official Visualizer.mp3",
-        "track_title": "Queen Of The Wires",
-        "artist_name": "Alec K. Redfearn & the Eyesores",
-        "track_duration": 253,
-        "track_genre": "Folk",
-        "track_listens": 1299
-      },
-      {
-        "db_id": 16,
-        "track_id": 141,
-        "track_path": "./src/audio/Kid Bloom Cowboy Official Visualizer.mp3",
-        "track_title": "Ohio",
-        "artist_name": "Alec K. Redfearn & the Eyesores",
-        "track_duration": 182,
-        "track_genre": "Folk",
-        "track_listens": 725
-      },
-      {
-        "db_id": 17,
-        "track_id": 142,
-        "track_path": "./src/audio/Kid Bloom Cowboy Official Visualizer.mp3",
-        "track_title": "Punjabi Watery Grave",
-        "artist_name": "Alec K. Redfearn & the Eyesores",
-        "track_duration": 470,
-        "track_genre": "Folk",
-        "track_listens": 848
-      },
-      {
-        "db_id": 18,
-        "track_id": 144,
-        "track_path": "./src/audio/Kid Bloom Cowboy Official Visualizer.mp3",
-        "track_title": "Wire Up",
-        "artist_name": "Amoebic Ensemble",
-        "track_duration": 82,
-        "track_genre": "Jazz",
-        "track_listens": 1143
-      },
-      {
-        "db_id": 19,
-        "track_id": 145,
-        "track_path": "./src/audio/Kid Bloom Cowboy Official Visualizer.mp3",
-        "track_title": "Amoebiasis",
-        "artist_name": "Amoebic Ensemble",
-        "track_duration": 326,
-        "track_genre": "Jazz",
-        "track_listens": 883
       }
     ],
-    20
+    15
   ]

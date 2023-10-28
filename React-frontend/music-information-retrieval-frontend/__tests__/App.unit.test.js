@@ -1,5 +1,5 @@
 import React from 'react';
-import { render } from '@testing-library/react';
+import { render, screen } from '@testing-library/react';
 import '@testing-library/jest-dom/extend-expect';
 import App from '../src/components/App/App';
 
@@ -17,47 +17,30 @@ describe('App Component - unit tests', () => {
   test('should not show the library search', () => {
     const { container } = render(<App />);
 
-    const searchLibraryComponent = container.querySelector('.showLibrarySearch');
+    const searchLibraryComponent = container.querySelector('.showLibrarySearchSelector');
     expect(searchLibraryComponent).not.toBeInTheDocument();
   });
 
   test('should not show the search by name', () => {
-    const { container } = render(<App />);
-
-    const searchLibraryComponent = container.querySelector('.showSearchByName');
+    const searchLibraryComponent = screen.queryByTestId('search-by-name-component');
     expect(searchLibraryComponent).not.toBeInTheDocument();
-    
-  });
 
-  test('should not show the search by name', () => {
-    const { container } = render(<App />);
-
-    const searchLibraryComponent = container.querySelector('.showSearchByName');
-    expect(searchLibraryComponent).not.toBeInTheDocument();
-    
   });
   test('should not show the search by title', () => {
-    const { container } = render(<App />);
-
-    const searchLibraryComponent = container.querySelector('.showSearchByTitle');
+    const searchLibraryComponent = screen.queryByTestId('search-by-title-component');
     expect(searchLibraryComponent).not.toBeInTheDocument();
-    
+
   });
 
   test('should not show playlist modal', () => {
-    const { container } = render(<App />);
-
-    const searchLibraryComponent = container.querySelector('.openPlaylistModal');
+    const searchLibraryComponent = screen.queryByTestId('playlist-modal-component');
     expect(searchLibraryComponent).not.toBeInTheDocument();
-    
+
   });
 
   test('should not show upload song form', () => {
-    const { container } = render(<App />);
-
-    const searchLibraryComponent = container.querySelector('.showUploadSongForm');
+    const searchLibraryComponent = screen.queryByTestId('upload-song-form-component');
     expect(searchLibraryComponent).not.toBeInTheDocument();
-    
+
   });
-  
 });

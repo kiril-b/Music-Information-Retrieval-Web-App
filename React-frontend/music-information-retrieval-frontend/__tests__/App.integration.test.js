@@ -5,7 +5,7 @@ import App from '../src/components/App/App';
 
 const fs = require('fs');
 const tracks = JSON.parse(
-    fs.readFileSync('./__tests__/response_data/get_tracks_pagination.json', 'utf8'),
+    fs.readFileSync('./__tests__/response_data/get_tracks.json', 'utf8'),
 );
 
 global.fetch = jest.fn((url) => {
