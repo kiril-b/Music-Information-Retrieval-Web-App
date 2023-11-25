@@ -12,7 +12,6 @@ function SearchByName() {
     const fetchData = (artistName) => {
         if (artistName) {
             const fullUrl = `${apiUrl}?artist_name=${artistName}&offset=0`;
-            console.log('-------------------------' + fullUrl)
             fetch(fullUrl)
                 .then((response) => response.json())
                 .then((data) => {

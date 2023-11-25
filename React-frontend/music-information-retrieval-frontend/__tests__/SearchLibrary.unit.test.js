@@ -2,6 +2,7 @@ import React from 'react';
 import { render, screen, fireEvent, act } from '@testing-library/react';
 import SearchLibrary from '../src/components/SearchLibrary/SearchLibrary';
 import '@testing-library/jest-dom/extend-expect';
+import { log } from 'console';
 
 const fs = require('fs');
 const tracks = JSON.parse(
@@ -10,6 +11,16 @@ const tracks = JSON.parse(
 const tracks_pagination = JSON.parse(
   fs.readFileSync('./__tests__/response_data/get_tracks_pagination.json', 'utf8'),
 );
+
+const track_listens_lower_upper_bound_genre = JSON.parse(
+  fs.readFileSync('./__tests__/response_data/get_tracks_by_searchlibrary_filter.json', 'utf8'),
+);
+
+const handleFormSubmitMock = {
+  handleFormSubmit() {
+    track_listens_lower_upper_bound_genre;
+  },
+};
 
 describe('SearchLibrary Component', () => {
   beforeEach(() => {
@@ -220,6 +231,53 @@ describe('SearchLibrary Component', () => {
       expect(isTrackInLocalStorage).toBe(false);
 
     });
-  })
+  });
 
+
+  test('should return specific data regarding values in filter', async () => {
+    const mockData = tracks;
+
+    global.fetch.mockResolvedValueOnce({
+      json: () => Promise.resolve(mockData),
+    });
+
+    act(async () => {
+      const { container } = render(<SearchLibrary />);
+
+
+      await act(async () => {
+        await new Promise((resolve) => setTimeout(resolve, 0));
+      });
+
+  
+      const inputElements = screen.getAllByPlaceholderText('0');
+      const lowerBoundInput = inputElements[0];
+      const upperBoundInput = inputElements[1];
+  
+      expect(lowerBoundInput).toBeInTheDocument();
+      expect(lowerBoundInput).toHaveValue('0');
+
+      expect(upperBoundInput).toBeInTheDocument();
+      expect(upperBoundInput).toHaveValue('0');
+  
+      fireEvent.change(lowerBoundInput, { target: { value: '7' } });
+      fireEvent.change(upperBoundInput, { target: { value: '240' } });  
+
+      const genereSelectElement = screen.getAllByPlaceholderText('---');
+      fireEvent.change(genereSelectElement, { target: { value: 'Country' } });
+
+      const searchButton = screen.getByTestId('search-btn')
+      expect(searchButton).toBeInTheDocument();
+
+      const searchSpy = jest.spyOn(handleFormSubmit, 'handleFormSubmit').mockImplementation();
+
+      if (fireEvent.click(searchButton).valueOf()) {
+        handleFormSubmitMock.handleFormSubmit();
+        expect(searchSpy).toHaveBeenCalled();
+      }
+
+      const songTitle = screen.getByText('Notturno')
+      expect(songTitle).toBeInTheDocument();
+    });
+  });
 });
