@@ -36,8 +36,8 @@ describe('Modal component', () => {
           return Promise.resolve(new Blob([mp3FileContent], { type: 'audio/mpeg' }));
         },
       });
-    // Click the play button
-    fireEvent.click(playButton);
+
+      fireEvent.click(playButton);
 
     await waitFor(() => expect(global.fetch).toHaveBeenCalledTimes(1));
   });
