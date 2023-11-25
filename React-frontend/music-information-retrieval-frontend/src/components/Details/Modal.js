@@ -47,6 +47,7 @@ function Modal({ details, onClose }) {
                         </div>
                         <div className=' mt-16 me-5'> {showPlayButton && (
                             <button
+                                data-testid= "play-btn"
                                 className="play-button"
                                 onClick={handlePlayClick}
                             >

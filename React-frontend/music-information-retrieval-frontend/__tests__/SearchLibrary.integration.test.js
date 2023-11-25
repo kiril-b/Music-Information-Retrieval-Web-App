@@ -1,6 +1,8 @@
 import React from 'react';
-import { render, screen, fireEvent, act, waitFor } from '@testing-library/react';
+import { render, screen, fireEvent, act } from '@testing-library/react';
+import SearchLibrary from '../src/components/SearchLibrary/SearchLibrary';
 import '@testing-library/jest-dom/extend-expect';
+import { log } from 'console';
 
 const fs = require('fs');
 const tracks = JSON.parse(
@@ -16,17 +18,76 @@ global.fetch = jest.fn((url) => {
 });
 
 describe('SearchLibrary Component - integration tests', () => {
-
-    // test('should search songs by filter', () => {
-    //     render(<App />);
-
-    //     const button = screen.getByText('Search Library');
-
-    //     act(() => {
-    //         fireEvent.click(button);
-    //     });
-    //     expect(screen.getByText('Loading...')).toBeInTheDocument();
-    // });
-
+    test('get details for Food - track', async () => {
+        const mockData = tracks;
     
+        global.fetch.mockResolvedValueOnce({
+          json: () => Promise.resolve(mockData),
+        });
+    
+        act(async () => {
+          const { container } = render(<SearchLibrary />);
+    
+    
+          await act(async () => {
+            await new Promise((resolve) => setTimeout(resolve, 0));
+          });
+    
+          const trackField = screen.getAllByText('Food')
+          expect(trackField).toBeInTheDocument();    
+
+          const detailsBtn = screen.getAllByText('See Details')
+          const detailsFoodButton = detailsBtn[0];
+          expect(detailsFoodButton).toBeInTheDocument();
+
+          fireEvent.click(detailsFoodButton)
+
+          const durationDetails = screen.getByText('Duration: 168 seconds')
+          expect(durationDetails).toBeInTheDocument();
+
+          const artistDetails = screen.getByText('Artist: AWOL')
+          expect(artistDetails).toBeInTheDocument();
+
+          const playTrackBtn = screen.getByTestId('play-btn')
+          expect(playTrackBtn).toBeInTheDocument();
+
+          const playTrackSpy = jest.spyOn(handlePlayClick, 'handlePlayClick').mockImplementation();
+
+          if (fireEvent.click(detailsFoodButton).valueOf()) {
+            playTrackMock.handlePlayClick();
+            expect(playTrackSpy).toHaveBeenCalled();
+          }          
+
+        });
+      });
+
+      test('get similar tracks for Food - track', async () => {
+        const mockData = tracks;
+    
+        global.fetch.mockResolvedValueOnce({
+          json: () => Promise.resolve(mockData),
+        });
+    
+        act(async () => {
+          const { container } = render(<SearchLibrary />);
+    
+    
+          await act(async () => {
+            await new Promise((resolve) => setTimeout(resolve, 0));
+          });
+    
+          const trackField = screen.getAllByText('Food')
+          expect(trackField).toBeInTheDocument();    
+
+          const similarBtns = screen.getAllByText('Get Similar Tracks')
+          const similarFoodBtn = similarBtns[0];
+          expect(similarFoodBtn).toBeInTheDocument();
+
+          fireEvent.click(similarFoodBtn)
+
+          const title = screen.getByText('List of Similar Tracks for Food')
+          expect(title).toBeInTheDocument();     
+        });
+      });
+
 });
