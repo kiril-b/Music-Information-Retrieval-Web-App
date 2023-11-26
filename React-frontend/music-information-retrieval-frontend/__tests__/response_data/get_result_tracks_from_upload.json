@@ -1,0 +1,53 @@
+{
+    "most_similar_tracks": [
+      {
+        "db_id": 23138,
+        "track_id": 112378,
+        "track_path": "./src/audio/Kid Bloom Cowboy Official Visualizer.mp3",
+        "track_title": "3 am West End",
+        "artist_name": "statusq",
+        "track_duration": 291,
+        "track_genre": "Electronic",
+        "track_listens": 1485,
+        "similarity_score": 0.5563532
+      },
+      {
+        "db_id": 10337,
+        "track_id": 42656,
+        "track_path": "./src/audio/Kid Bloom Cowboy Official Visualizer.mp3",
+        "track_title": "Join the Bahamas",
+        "artist_name": "Gino Pertot",
+        "track_duration": 207,
+        "track_genre": "Folk",
+        "track_listens": 323,
+        "similarity_score": 0.5028917
+      },
+      {
+        "db_id": 26258,
+        "track_id": 127162,
+        "track_path": "./src/audio/Kid Bloom Cowboy Official Visualizer.mp3",
+        "track_title": "Another Time (rehearsal take)",
+        "artist_name": "Rya",
+        "track_duration": 236,
+        "track_genre": "Rock",
+        "track_listens": 649,
+        "similarity_score": 0.49391818
+      },
+      {
+        "db_id": 26036,
+        "track_id": 126403,
+        "track_path": "./src/audio/Kid Bloom Cowboy Official Visualizer.mp3",
+        "track_title": "Forest Friends",
+        "artist_name": "Shy Kids",
+        "track_duration": 299,
+        "track_genre": "Pop",
+        "track_listens": 1896,
+        "similarity_score": 0.46313304
+      }
+    ],
+    "genre_prediction": {
+      "Electronic": 42.65958023071289,
+      "Pop": 30.86638832092285,
+      "Experimental": 10.320134162902832
+    }
+  }

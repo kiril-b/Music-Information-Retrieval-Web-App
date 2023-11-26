@@ -79,15 +79,15 @@ function UploadSongForm() {
   return (
     <div className="track-upload-container">
       <div className="file-input">
-      <label className="text-white">Upload mp3 file: </label>
-        <input type="file" accept=".mp3" onChange={handleFileChange}/>
+      <label className="text-white" for='upload'>Upload mp3 file: </label>
+        <input type="file" accept=".mp3" id='upload' onChange={handleFileChange}/>
       </div>
       <div className="upload-options">
-        <label className="text-white">Top N Genres: </label>
-        <input type="number" value={topNGenres} onChange={(e) => setTopNGenres(e.target.value)} className="input-field" />
-        <label className="text-white">Top N Similar: </label>
+        <label className="text-white" for='n_genres'>Top N Genres: </label>
+        <input type="number" value={topNGenres} id='n_genres' onChange={(e) => setTopNGenres(e.target.value)} className="input-field" />
+        <label className="text-white" for='n_similar'>Top N Similar: </label>
         <input type="number" value={topNSimilar} onChange={(e) => setTopNSimilar(e.target.value)} className="input-field" />
-        <button onClick={handleUpload} className="upload-button">Upload</button>
+        <button onClick={handleUpload} id='n_similar' className="upload-button">Upload</button>
       </div>
       {Object.keys(genrePrediction).length > 0 && (
         <div className="genre-prediction" style={{borderTop:' 1px solid white', borderBottom: ' 1px solid white'}}>
