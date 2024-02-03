@@ -1,0 +1,122 @@
+[
+    {
+      "db_id": 0,
+      "track_id": 2,
+      "track_path": "./src/audio/Kid Bloom Cowboy Official Visualizer.mp3",
+      "track_title": "Food",
+      "artist_name": "AWOL",
+      "track_duration": 168,
+      "track_genre": "Hip-Hop",
+      "track_listens": 1293
+    },
+    {
+      "db_id": 1,
+      "track_id": 3,
+      "track_path": "./src/audio/Kid Bloom Cowboy Official Visualizer.mp3",
+      "track_title": "Electric Ave",
+      "artist_name": "AWOL",
+      "track_duration": 237,
+      "track_genre": "Hip-Hop",
+      "track_listens": 514
+    },
+    {
+      "db_id": 2,
+      "track_id": 5,
+      "track_path": "./src/audio/Kid Bloom Cowboy Official Visualizer.mp3",
+      "track_title": "This World",
+      "artist_name": "AWOL",
+      "track_duration": 206,
+      "track_genre": "Hip-Hop",
+      "track_listens": 1151
+    },
+    {
+      "db_id": 3,
+      "track_id": 134,
+      "track_path": "./src/audio/Kid Bloom Cowboy Official Visualizer.mp3",
+      "track_title": "Street Music",
+      "artist_name": "AWOL",
+      "track_duration": 207,
+      "track_genre": "Hip-Hop",
+      "track_listens": 943
+    },
+    {
+      "db_id": 4,
+      "track_id": 10666,
+      "track_path": "./src/audio/Kid Bloom Cowboy Official Visualizer.mp3",
+      "track_title": "Hangloose",
+      "artist_name": "AWOL",
+      "track_duration": 266,
+      "track_genre": "Hip-Hop",
+      "track_listens": 929
+    },
+    {
+      "db_id": 5,
+      "track_id": 10815,
+      "track_path": "./src/audio/Kid Bloom Cowboy Official Visualizer.mp3",
+      "track_title": "CYCLE",
+      "artist_name": "AWOL",
+      "track_duration": 151,
+      "track_genre": "Hip-Hop",
+      "track_listens": 1205
+    },
+    {
+      "db_id": 6,
+      "track_id": 80287,
+      "track_path": "./src/audio/Kid Bloom Cowboy Official Visualizer.mp3",
+      "track_title": "F.R.E.S.H.",
+      "artist_name": "AWOL",
+      "track_duration": 99,
+      "track_genre": "Hip-Hop",
+      "track_listens": 771
+    },
+    {
+      "db_id": 7,
+      "track_id": 80290,
+      "track_path": "./src/audio/Kid Bloom Cowboy Official Visualizer.mp3",
+      "track_title": "Broken Language",
+      "artist_name": "AWOL",
+      "track_duration": 206,
+      "track_genre": "Hip-Hop",
+      "track_listens": 335
+    },
+    {
+      "db_id": 8,
+      "track_id": 80293,
+      "track_path": "./src/audio/Kid Bloom Cowboy Official Visualizer.mp3",
+      "track_title": "HipHop Junkfood",
+      "artist_name": "AWOL",
+      "track_duration": 73,
+      "track_genre": "Hip-Hop",
+      "track_listens": 2323
+    },
+    {
+      "db_id": 9,
+      "track_id": 80294,
+      "track_path": "./src/audio/Kid Bloom Cowboy Official Visualizer.mp3",
+      "track_title": "The Plot Thickens",
+      "artist_name": "AWOL",
+      "track_duration": 177,
+      "track_genre": "Hip-Hop",
+      "track_listens": 389
+    },
+    {
+      "db_id": 10,
+      "track_id": 80295,
+      "track_path": "./src/audio/Kid Bloom Cowboy Official Visualizer.mp3",
+      "track_title": "BangBang",
+      "artist_name": "AWOL",
+      "track_duration": 142,
+      "track_genre": "Hip-Hop",
+      "track_listens": 715
+    },
+    {
+      "db_id": 11,
+      "track_id": 80296,
+      "track_path": "./src/audio/Kid Bloom Cowboy Official Visualizer.mp3",
+      "track_title": "10 Club Commandments",
+      "artist_name": "AWOL",
+      "track_duration": 149,
+      "track_genre": "Hip-Hop",
+      "track_listens": 491
+    }
+  ]

@@ -6,23 +6,23 @@
     color: #fff;
     border-radius: 5px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
-  }
-  
-  .file-input {
+}
+
+.file-input {
     margin-top: 20px;
-  }
-  
-  .upload-options {
+}
+
+.upload-options {
     margin-top: 20px;
-  }
-  
-  .input-label {
+}
+
+.input-label {
     font-weight: bold;
     color: #333;
-  }
-  
-  input[type="number"],
-  input[type="file"] {
+}
+
+input[type="number"],
+input[type="file"] {
     width: 100px;
     padding: 5px;
     border: 1px solid #ccc;
@@ -30,11 +30,13 @@
     margin: 5px;
     color: #333;
     background-color: #fff;
-  }
-  input[type="file"]{
+}
+
+input[type="file"] {
     width: 70%;
-  }
-  .upload-button {
+}
+
+.upload-button {
     background-color: #7c3aed;
     color: white;
     border: none;
@@ -43,38 +45,38 @@
     margin: 5px;
     cursor: pointer;
     transition: background-color 0.3s;
-  }
-  
-  .upload-button:hover {
+}
+
+.upload-button:hover {
     background-color: #0056b3;
-  }
-  
-  .genre-prediction {
+}
+
+.genre-prediction {
     margin-top: 20px;
     color: #fff;
-  }
-  
-  .genre-item {
+}
+
+.genre-item {
     list-style: none;
     margin: 5px 0;
     font-weight: bold;
     color: #fff;
-  }
-  
-  .most-similar-tracks {
+}
+
+.most-similar-tracks {
     margin-top: 20px;
     color: #fff;
-  }
-  
-  .track-item {
+}
+
+.track-item {
     border: 1px solid #ccc;
     padding: 10px;
     border-radius: 4px;
     margin: 10px 0;
     background-color: #333;
-  }
-  
-  .play-button-upload {
+}
+
+.play-button-upload {
     background-color: #ff6b6b;
     color: white;
     border: none;
@@ -82,9 +84,8 @@
     padding: 5px;
     cursor: pointer;
     transition: background-color 0.3s;
-  }
-  
-  .play-button-upload:hover {
+}
+
+.play-button-upload:hover {
     background-color: #ff4f4f;
-  }
-  
+}

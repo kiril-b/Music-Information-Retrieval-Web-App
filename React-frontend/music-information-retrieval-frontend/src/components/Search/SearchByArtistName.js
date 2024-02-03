@@ -12,7 +12,6 @@ function SearchByName() {
     const fetchData = (artistName) => {
         if (artistName) {
             const fullUrl = `${apiUrl}?artist_name=${artistName}&offset=0`;
-
             fetch(fullUrl)
                 .then((response) => response.json())
                 .then((data) => {
@@ -31,7 +30,7 @@ function SearchByName() {
     return (
         <div className='p-4'>
             <div className='grid'>
-                <label className='text-white' style={{ fontSize: '25px', fontWeight: '800' }}>Enter title</label>
+                <label className='text-white' style={{ fontSize: '25px', fontWeight: '800' }}>Enter artist name</label>
                 <input
                     type="text"
                     className="p-2 border rounded-lg"

@@ -31,8 +31,9 @@ function SearchByTitle() {
     return (
         <div className='p-4'>
             <div className='grid'>
-            <label className='text-white' style={{fontSize: '25px', fontWeight: '800'}}>Enter title</label>
+            <label className='text-white' style={{fontSize: '25px', fontWeight: '800'}} for='title-input'>Enter title</label>
             <input
+                id='title-input'
                 type="text"
                 className="p-2 border rounded-lg text-white"
                 style={{ background: 'linear-gradient(to bottom, #ff5cad, #9647ff)', width: '25rem' }}
@@ -44,6 +45,7 @@ function SearchByTitle() {
             <ul>
                 {tracks.map((track) => (
                     <li
+                        data-testid={track.db_id}
                         key={track.db_id}
                         className="bg-white p-4 my-2 rounded-md shadow-md flex justify-between"
                         style={{ width: '44rem' }}

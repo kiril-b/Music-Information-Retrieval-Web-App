@@ -1,0 +1,46 @@
+[
+    {
+      "db_id": 5,
+      "track_id": 10815,
+      "track_path": "./src/audio/Kid Bloom Cowboy Official Visualizer.mp3",
+      "track_title": "CYCLE",
+      "artist_name": "AWOL",
+      "track_duration": 151,
+      "track_genre": "Hip-Hop",
+      "track_listens": 1205,
+      "similarity_score": 1.0000001
+    },
+    {
+      "db_id": 8,
+      "track_id": 80293,
+      "track_path": "./src/audio/Kid Bloom Cowboy Official Visualizer.mp3",
+      "track_title": "HipHop Junkfood",
+      "artist_name": "AWOL",
+      "track_duration": 73,
+      "track_genre": "Hip-Hop",
+      "track_listens": 2323,
+      "similarity_score": 0.5861523
+    },
+    {
+      "db_id": 10,
+      "track_id": 80295,
+      "track_path": "./src/audio/Kid Bloom Cowboy Official Visualizer.mp3",
+      "track_title": "BangBang",
+      "artist_name": "AWOL",
+      "track_duration": 142,
+      "track_genre": "Hip-Hop",
+      "track_listens": 715,
+      "similarity_score": 0.53030723
+    },
+    {
+      "db_id": 7,
+      "track_id": 80290,
+      "track_path": "./src/audio/Kid Bloom Cowboy Official Visualizer.mp3",
+      "track_title": "Broken Language",
+      "artist_name": "AWOL",
+      "track_duration": 206,
+      "track_genre": "Hip-Hop",
+      "track_listens": 335,
+      "similarity_score": 0.5251834
+    }
+  ]

@@ -1,0 +1,112 @@
+[
+    {
+      "db_id": 2,
+      "track_id": 5,
+      "track_path": "./src/audio/Kid Bloom Cowboy Official Visualizer.mp3",
+      "track_title": "This World",
+      "artist_name": "AWOL",
+      "track_duration": 206,
+      "track_genre": "Hip-Hop",
+      "track_listens": 1151,
+      "similarity_score": 0.99999994
+    },
+    {
+      "db_id": 12888,
+      "track_id": 124743,
+      "track_path": "./src/audio/Kid Bloom Cowboy Official Visualizer.mp3",
+      "track_title": "Melancholy Slang Interlude",
+      "artist_name": "K. Sparks",
+      "track_duration": 105,
+      "track_genre": "Hip-Hop",
+      "track_listens": 522,
+      "similarity_score": 0.54459995
+    },
+    {
+      "db_id": 15590,
+      "track_id": 66522,
+      "track_path": "./src/audio/Kid Bloom Cowboy Official Visualizer.mp3",
+      "track_title": "Speedracer",
+      "artist_name": "krackatoa",
+      "track_duration": 306,
+      "track_genre": "Electronic",
+      "track_listens": 3660,
+      "similarity_score": 0.5398591
+    },
+    {
+      "db_id": 4494,
+      "track_id": 15204,
+      "track_path": "./src/audio/Kid Bloom Cowboy Official Visualizer.mp3",
+      "track_title": "Fam Bubblin' feat. Devaron",
+      "artist_name": "Seven",
+      "track_duration": 251,
+      "track_genre": "Hip-Hop",
+      "track_listens": 476,
+      "similarity_score": 0.5238355
+    },
+    {
+      "db_id": 685,
+      "track_id": 1642,
+      "track_path": "./src/audio/Kid Bloom Cowboy Official Visualizer.mp3",
+      "track_title": "Hrz",
+      "artist_name": "So Cow",
+      "track_duration": 68,
+      "track_genre": "Pop",
+      "track_listens": 277,
+      "similarity_score": 0.51773316
+    },
+    {
+      "db_id": 16002,
+      "track_id": 72477,
+      "track_path": "./src/audio/Kid Bloom Cowboy Official Visualizer.mp3",
+      "track_title": "Last Days of Disco",
+      "artist_name": "Fhernando",
+      "track_duration": 242,
+      "track_genre": "Electronic",
+      "track_listens": 11011,
+      "similarity_score": 0.5155416
+    },
+    {
+      "db_id": 22475,
+      "track_id": 109659,
+      "track_path": "./src/audio/Kid Bloom Cowboy Official Visualizer.mp3",
+      "track_title": "Sweet Dreams",
+      "artist_name": "D3Zs",
+      "track_duration": 239,
+      "track_genre": "Hip-Hop",
+      "track_listens": 1043,
+      "similarity_score": 0.51218706
+    },
+    {
+      "db_id": 4148,
+      "track_id": 14359,
+      "track_path": "./src/audio/Kid Bloom Cowboy Official Visualizer.mp3",
+      "track_title": "Eye 2 Eye",
+      "artist_name": "OUO",
+      "track_duration": 188,
+      "track_genre": "Hip-Hop",
+      "track_listens": 405,
+      "similarity_score": 0.5096787
+    },
+    {
+      "db_id": 4165,
+      "track_id": 14383,
+      "track_path": "./src/audio/Kid Bloom Cowboy Official Visualizer.mp3",
+      "track_title": "Man Overboard",
+      "artist_name": "Cadence",
+      "track_duration": 206,
+      "track_genre": "Hip-Hop",
+      "track_listens": 273,
+      "similarity_score": 0.5089164
+    },
+    {
+      "db_id": 22470,
+      "track_id": 108811,
+      "track_path": "./src/audio/Kid Bloom Cowboy Official Visualizer.mp3",
+      "track_title": "Words (Featuring 34Pro)",
+      "artist_name": "D3Zs",
+      "track_duration": 341,
+      "track_genre": "Hip-Hop",
+      "track_listens": 1017,
+      "similarity_score": 0.5078732
+    }
+  ]    

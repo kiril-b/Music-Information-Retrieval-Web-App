@@ -43,9 +43,6 @@
           .map((key) => `${key}=${queryParams[key]}`)
           .join('&');
 
-          console.log('----------------------------------');
-          console.log(apiUrl + queryString);
-          
         fetch(`${apiUrl}?${queryString}`)
           .then((response) => response.json())
           .then((data) => {
@@ -60,8 +57,6 @@
             console.error('Error fetching data:', error);
             setLoading(false);
           });
-
-        
       };
 
       const handleNextPage = () => {
@@ -139,7 +134,6 @@
           localStorage.setItem('selectedTracks', JSON.stringify(updatedList));
         }
         setTracker(!tracker);
-
       };
 
       const handleRemoveFromLocalStorage = (trackId) => {
@@ -178,10 +172,12 @@
                 <input
                   type="number"
                   id="track_listens_lower_bound"
+                  data-testid="track_listens_lower_bound_input"
                   name="track_listens_lower_bound"
                   value={formData.track_listens_lower_bound}
                   onChange={handleInputChange}
                   className="border rounded-md px-2 py-1 w-20"
+                  placeholder='0'
                 />
               </div>
               <div className="flex items-center gap-2">
@@ -195,6 +191,7 @@
                   value={formData.track_listens_upper_bound}
                   onChange={handleInputChange}
                   className="border rounded-md px-2 py-1 w-20"
+                  placeholder='0'
                 />
               </div>
               <div className="flex items-center gap-2">
@@ -229,6 +226,7 @@
               </div>
               <div>
                 <button
+                  data-testid="search-btn"
                   type="submit"
                   className="bg-pink-600 hover:bg-pink-700 text-white px-4 py-2 rounded-md"
                 >

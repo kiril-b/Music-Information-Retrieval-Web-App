@@ -66,7 +66,6 @@ function LocalTrackModal({ trackIds, onClose }) {
   const indexOfFirstTrack = indexOfLastTrack - tracksPerPage;
   const currentTracks = details.slice(indexOfFirstTrack, indexOfLastTrack);
 
-  console.log(indexOfPlaySong);
 
   return (
     <div className="modal-background">
