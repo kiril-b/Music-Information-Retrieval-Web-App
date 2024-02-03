@@ -4,12 +4,12 @@ from src.models.models import Track, ScoredTrack
 from src.models.enumerations import TrackFields
 
 
-def record_to_track(record: Record | ScoredPoint) -> Track | ScoredTrack:
+def record_to_track(record: Record | ScoredPoint | None) -> Track | ScoredTrack:
     """
     Convert a Qdrant Record or ScoredPoint to a Track or ScoredTrack object.
 
     Args:
-        record (Record | ScoredPoint): The Qdrant Record or ScoredPoint to be converted.
+        record (Record | ScoredPoint | None): The Qdrant Record or ScoredPoint to be converted.
 
     Returns:
         Track | ScoredTrack: A Track or ScoredTrack object created from the provided record.

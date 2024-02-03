@@ -107,7 +107,7 @@ def test_get_tracks_pagination(
     # to remove the `None` entries
     q_params = {k: v for k, v in q_params.items() if v is not None}
 
-    response = client.get(url=f"/tracks-library/get_tracks_pagination", params=q_params)
+    response = client.get(url="/tracks-library/get_tracks_pagination", params=q_params)
 
     if (
         (offset is not None and offset >= 0)
@@ -157,7 +157,7 @@ def test_get_tracks_pagination(
 def test_get_tracks_next_page(limit, next_page_flag):
     q_params = dict(offset=0, limit=limit)
 
-    response = client.get(url=f"/tracks-library/get_tracks_pagination", params=q_params)
+    response = client.get(url="/tracks-library/get_tracks_pagination", params=q_params)
 
     tracks_list, next_page_index = response.json()
 
@@ -209,7 +209,7 @@ def test_get_similar_tracks(
                 artist_name == scored_track["artist_name"]
                 for scored_track in similar_tracks
             ), """Similar tracks not withing the subset of tracks from the specified artist"""
-    
+
     else:
         assert response.status_code == 422, """Validation error not detected"""
 
@@ -224,22 +224,19 @@ def test_get_similar_tracks__given_wrong_id__raises_error():
 
 @pytest.mark.parametrize(
     "id_1, id_2, id_3",
-    [
-        (1, 2, 3),
-        (99999, 1, 2),
-        (-1, 1, 2)
-    ],
+    [(1, 2, 3), (99999, 1, 2), (-1, 1, 2)],
 )
 def test_enrich_playlist(id_1, id_2, id_3, track_json_keys):
     track_ids = [id_1, id_2, id_3]
     response = client.post(
-        url="/tracks-library/enrich_playlist",
-        data=json.dumps(track_ids)
+        url="/tracks-library/enrich_playlist", data=json.dumps(track_ids)
     )
 
     if any(id < 0 for id in track_ids):
         print(response.json())
-        assert response.status_code == 400 and response.json() == {"detail": "All track IDs must be positive integers"}, """Negative ID should not be allowed"""
+        assert response.status_code == 400 and response.json() == {
+            "detail": "All track IDs must be positive integers"
+        }, """Negative ID should not be allowed"""
     elif 99999 in track_ids:
         print(response.json())
         assert response.status_code == 404, """Track with invalid ID found"""

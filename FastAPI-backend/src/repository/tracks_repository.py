@@ -1,6 +1,6 @@
 import os
 
-from typing import Any
+from typing import Any, cast
 
 from dotenv import load_dotenv
 from qdrant_client import QdrantClient, models
@@ -11,14 +11,14 @@ from src.utils.repo_utils import generate_must_clauses
 from src.models.enumerations import TrackFields
 
 load_dotenv()
-COLLECTION_NAME = os.getenv("QDRANT_COLLECTION_NAME")
+COLLECTION_NAME = os.environ["QDRANT_COLLECTION_NAME"]
 client = QdrantClient(url=os.getenv("QDRANT_URL"))
 
 
 def get_tracks(
     offset: int = 0,
     limit: int = 15,
-    exact_match_filter: dict[str, Any] = None,
+    exact_match_filter: dict[str, Any] | None = None,
     track_listens_lower: int | None = None,
     track_listens_upper: int | None = None,
     client: QdrantClient = client,
@@ -47,19 +47,22 @@ def get_tracks(
             models.FieldCondition(
                 key=TrackFields.TRACK_LISTENS.value,
                 range=models.Range(
-                    gte=float(track_listens_lower) if track_listens_lower else None, 
-                    lte=float(track_listens_upper) if track_listens_upper else None
+                    gte=float(track_listens_lower) if track_listens_lower else None,
+                    lte=float(track_listens_upper) if track_listens_upper else None,
                 ),
             )
         )
 
-    return client.scroll(
-        collection_name=collection_name,
-        offset=offset,
-        limit=limit,
-        scroll_filter=models.Filter(must=must_clauses),
-        with_payload=True,
-        with_vectors=False,
+    return cast(
+        tuple[list[Record], int | None],
+        client.scroll(
+            collection_name=collection_name,
+            offset=offset,
+            limit=limit,
+            scroll_filter=models.Filter(must=must_clauses),  # type: ignore
+            with_payload=True,
+            with_vectors=False,
+        ),
     )
 
 
@@ -158,14 +161,14 @@ def get_most_similar_tracks(
         if query_track is None:
             raise DatabaseError(f"Track with id: {track_id} does not exist.")
 
-        track_embedding = query_track.vector
+        track_embedding = cast(list[float], query_track.vector)
 
     must_clauses = generate_must_clauses(exact_match_filter)
 
     return client.search(
         collection_name=collection_name,
-        query_vector=track_embedding,
-        query_filter=models.Filter(must=must_clauses),
+        query_vector=track_embedding,  # type: ignore
+        query_filter=models.Filter(must=must_clauses),  # type: ignore
         search_params=models.SearchParams(exact=exact_search),
         limit=limit,
         with_vectors=with_vectors,
@@ -196,19 +199,22 @@ def get_tracks_full_text_match(
         tuple[list[Record], int | None]: A tuple containing a list of records (tracks) and the index of the track on the next page.
     """
 
-    return client.scroll(
-        collection_name=collection_name,
-        offset=offset,
-        limit=limit,
-        with_payload=True,
-        with_vectors=False,
-        scroll_filter=models.Filter(
-            must=[
-                models.FieldCondition(
-                    key=enum_field.value,
-                    match=models.MatchText(text=match_string),
-                )
-            ]
+    return cast(
+        tuple[list[Record], int | None],
+        client.scroll(
+            collection_name=collection_name,
+            offset=offset,
+            limit=limit,
+            with_payload=True,
+            with_vectors=False,
+            scroll_filter=models.Filter(
+                must=[
+                    models.FieldCondition(
+                        key=enum_field.value,
+                        match=models.MatchText(text=match_string),
+                    )
+                ]
+            ),
         ),
     )
 

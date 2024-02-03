@@ -4,7 +4,7 @@ from qdrant_client import QdrantClient, models
 
 
 def generate_must_clauses(
-    filter_conditions: dict[str, Any]
+    filter_conditions: dict[str, Any] | None
 ) -> list[models.FieldCondition]:
     """
     Generate a list of Qdrant FieldCondition objects based on filter conditions.
@@ -34,9 +34,9 @@ def populate_db_test(
     qdrant_client: QdrantClient,
     collection_name: str,
     vectors: list[list[int]],
-    payloads: list[dict[str, Any]] | None = None,
+    payloads: list[dict[str, Any] | None] | None = None,
 ):
-    points = list()
+    points: list = []
     point_id = 0
     for p, v in zip(payloads or [None] * len(vectors), vectors):
         point = models.PointStruct(id=point_id, vector=list(map(float, v)))
