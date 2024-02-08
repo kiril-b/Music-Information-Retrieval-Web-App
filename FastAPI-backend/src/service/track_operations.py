@@ -1,4 +1,4 @@
-from typing import Any
+from typing import Any, cast
 
 from fastapi import UploadFile
 from src.models.enumerations import TrackFields
@@ -14,7 +14,7 @@ def get_tracks(
     limit: int,
     track_listens_lower_bound: int | None,
     track_listens_upper_bound: int | None,
-    exact_match_filter: dict[str, Any] = None,
+    exact_match_filter: dict[str, Any] | None = None,
 ) -> tuple[list[Track], int | None]:
     """
     Retrieve a list of tracks based on various filters.
@@ -85,15 +85,18 @@ def find_n_most_similar_tracks_by_id(
         list[ScoredTrack]: A list of ScoredTrack objects representing the most similar tracks found.
     """
 
-    return [
-        model_creation.record_to_track(scored_point)
-        for scored_point in tracks_repository.get_most_similar_tracks(
-            track_id=track_id,
-            limit=n,
-            with_payload=True,
-            exact_match_filter=exact_match_filter,
-        )
-    ]
+    return cast(
+        list[ScoredTrack],
+        [
+            model_creation.record_to_track(scored_point)
+            for scored_point in tracks_repository.get_most_similar_tracks(
+                track_id=track_id,
+                limit=n,
+                with_payload=True,
+                exact_match_filter=exact_match_filter,
+            )
+        ],
+    )
 
 
 def find_n_most_similar_tracks_by_embedding(
@@ -110,14 +113,17 @@ def find_n_most_similar_tracks_by_embedding(
         list[ScoredTrack]: A list of ScoredTrack objects representing the most similar tracks found.
     """
 
-    return [
-        model_creation.record_to_track(scored_point)
-        for scored_point in tracks_repository.get_most_similar_tracks(
-            track_embedding=track_embedding,
-            limit=n,
-            with_payload=True,
-        )
-    ]
+    return cast(
+        list[ScoredTrack],
+        [
+            model_creation.record_to_track(scored_point)
+            for scored_point in tracks_repository.get_most_similar_tracks(
+                track_embedding=track_embedding,
+                limit=n,
+                with_payload=True,
+            )
+        ],
+    )
 
 
 def get_track_by_id(track_id: int) -> Track:
@@ -132,8 +138,11 @@ def get_track_by_id(track_id: int) -> Track:
 
     """
 
-    return model_creation.record_to_track(
-        tracks_repository.get_track_by_id(track_id=track_id)
+    return cast(
+        Track,
+        model_creation.record_to_track(
+            tracks_repository.get_track_by_id(track_id=track_id)
+        ),
     )
 
 

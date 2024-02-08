@@ -21,7 +21,6 @@ async def get_audio(track_id: int):
 
     try:
         return FileResponse(track.track_path, media_type='audio/mpeg')
-        # return FileResponse(track.track_path)
     except FileNotFoundError:
         raise HTTPException(status_code=404, detail="Track not found")
 

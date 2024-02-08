@@ -4,6 +4,7 @@ from scipy import stats
 
 from src.utils import constants
 
+
 def generate_columns() -> pd.MultiIndex:
     """
     Generate a MultiIndex for feature columns.
@@ -16,7 +17,7 @@ def generate_columns() -> pd.MultiIndex:
     )
     moments = ("mean", "std", "skew", "kurtosis", "median", "min", "max")
 
-    columns = []
+    columns: list = []
     for name, size in feature_sizes.items():
         for moment in moments:
             it = ((name, moment, "{:02d}".format(i + 1)) for i in range(size))
@@ -25,7 +26,7 @@ def generate_columns() -> pd.MultiIndex:
     names = ("feature", "statistics", "number")
     columns = pd.MultiIndex.from_tuples(columns, names=names)
 
-    return columns.sort_values()
+    return columns.sort_values()  # type: ignore
 
 
 def feature_stats(features: pd.Series, name: str, values: np.ndarray) -> pd.Series:

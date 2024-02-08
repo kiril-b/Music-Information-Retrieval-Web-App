@@ -24,7 +24,13 @@ async def extract_features(file: UploadFile, scale: bool = True) -> pd.DataFrame
     ) = extract_audio_features_raw(audio_data, sample_rate)
 
     features_df = raw_features_to_df(
-        file.filename, chroma, zcr, rmse, spectral_contrast, spectral_rolloff, mfcc
+        file.filename or "Unknown",
+        chroma,
+        zcr,
+        rmse,
+        spectral_contrast,
+        spectral_rolloff,
+        mfcc,
     )
 
     if scale:
@@ -60,7 +66,7 @@ def extract_audio_features_raw(
     return chroma, zcr, rmse, spectral_contrast, spectral_rolloff, mfcc
 
 
-def extract_chroma_features(audio_data: np.ndarray, sample_rate: int) -> np.ndarray:
+def extract_chroma_features(audio_data: np.ndarray, sample_rate: float) -> np.ndarray:
     cqt = np.abs(
         librosa.cqt(
             audio_data,
@@ -91,8 +97,12 @@ def raw_features_to_df(
     features = feature_stats(features=features, name="chroma_cqt", values=chroma)
     features = feature_stats(features=features, name="zcr", values=zcr)
     features = feature_stats(features=features, name="rmse", values=rmse)
-    features = feature_stats(features=features, name="spectral_contrast", values=spectral_contrast)  # noqa: E501
-    features = feature_stats(features=features, name="spectral_rolloff", values=spectral_rolloff)  # noqa: E501
+    features = feature_stats(
+        features=features, name="spectral_contrast", values=spectral_contrast
+    )  # noqa: E501
+    features = feature_stats(
+        features=features, name="spectral_rolloff", values=spectral_rolloff
+    )  # noqa: E501
     features = feature_stats(features=features, name="mfcc", values=mfcc)
 
     features_df = features.to_frame().T

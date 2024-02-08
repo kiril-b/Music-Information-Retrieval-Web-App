@@ -1,6 +1,6 @@
 from src.models.models import Track
 import numpy as np
-from qdrant_client.http.models.models import Record, ScoredPoint
+from qdrant_client.http.models.models import ScoredPoint
 
 from src.repository import tracks_repository
 from src.utils import model_creation
@@ -21,7 +21,7 @@ def enrich(track_ids: list[int]) -> list[Track]:
         to include more meaningful playlist enrichment in the future.
     """
 
-    enriched_playlist_points: list[ScoredPoint] = list()
+    enriched_playlist_points: list[ScoredPoint] = []
     for track_id in track_ids:
         most_similar_for_track = tracks_repository.get_most_similar_tracks(
             track_id=track_id,
@@ -38,7 +38,7 @@ def enrich(track_ids: list[int]) -> list[Track]:
         num_tracks = np.random.randint(1, 6)
         # Append the new points similar to the one in the query
         enriched_playlist_points += np.random.choice(
-            most_similar_for_track, num_tracks, replace=False
+            most_similar_for_track, num_tracks, replace=False  # type: ignore
         ).tolist()
 
     return [
