@@ -62,7 +62,7 @@ describe("SearchLibrary Component", () => {
     expect(screen.queryByText("Loading...")).toBeNull();
     expect(screen.getByText("Food - AWOL")).toBeInTheDocument();
 
-    const getSimilarButtons = screen.getAllByText("tt Similar Tracks");
+    const getSimilarButtons = screen.getAllByText("Similar Tracks");
     expect(getSimilarButtons.length).toBe(15);
 
     const getDetailsButtons = screen.getAllByText("See Details");
