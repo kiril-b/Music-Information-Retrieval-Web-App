@@ -62,7 +62,7 @@ describe("SearchLibrary Component", () => {
     expect(screen.queryByText("Loading...")).toBeNull();
     expect(screen.getByText("Food - AWOL")).toBeInTheDocument();
 
-    const getSimilarButtons = screen.getAllByText("Similar Tracks");
+    const getSimilarButtons = screen.getAllByText("Get Similar Tracks");
     expect(getSimilarButtons.length).toBe(15);
 
     const getDetailsButtons = screen.getAllByText("See Details");
@@ -122,6 +122,7 @@ describe("SearchLibrary Component", () => {
 
     await screen.findByText("Amoebiasis - Amoebic Ensemble");
   });
+
 
   test("add first song in local storage playlist", async () => {
     const mockData = tracks;
