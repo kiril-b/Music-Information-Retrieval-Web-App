@@ -7,7 +7,7 @@ Start a <a href="https://qdrant.tech/">Qdrant</a> instance with docker
 docker pull qdrant/qdrant
 docker run -p 6333:6333 qdrant/qdrant
 ```
-Create a .env file and define the environment variable to connect to the databse
+Create a .env file and define the environment variable to connect to the database
 ```
 QDRANT_URL='http://localhost:6333'
 QDRANT_COLLECTION_NAME=... # Not necessary for running the tests
