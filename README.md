@@ -13,5 +13,5 @@ This will launch the development server, and you can access the app at http://lo
 <h3>Running Tests</h3>
 
 Tests are located in the __tests__ folder at the root of the frontend app. To run the tests, use the following command:
-```npm test```
+```npm test```.
 This will execute the test suite and provide feedback on the test results.
